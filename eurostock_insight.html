@@ -1,10 +1,7 @@
-{% extends 'base.html' %}
-{% block title %}Article{% endblock %}
-{% block content %}
+
 <head>
-{% load static %}
-<link href='{% static "generaluse/base.css" %}' rel='stylesheet'>
-<link href='{% static "eurostock/add.css" %}' rel='stylesheet'>
+<link href="generaluse/base.css" rel='stylesheet'>
+<link href="eurostock/add.css" rel='stylesheet'>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js'></script>
 <script src='https://cdn.anychart.com/releases/8.13.0/js/anychart-bundle.min.js'></script>
 <script src="https://code.highcharts.com/maps/highmaps.js"></script>
@@ -22,7 +19,7 @@
 <section>
 <div class="container reveal">
 <h1 style = "text-align: center">Putting Munich under the microscope</h1>
-<img src="{% static 'eurostock/munich.jpg' %}" alt="ImageFileNotFound" width="100%" height="auto">
+<img src="eurostock/munich.jpg" alt="ImageFileNotFound" width="100%" height="auto">
 </div>
 </section>
 <main>
@@ -214,10 +211,10 @@
 
 </main>
 
-<script src = '{% static "generaluse/reveal.js" %}'></script>
-<script src = '{% static "generaluse/timeseries_sameaxis.js" %}'></script>
-<script src = '{% static "eurostock/euromap.js" %}'></script>
-<script src = '{% static "eurostock/eurofreq.js" %}'></script>
+<script src = "generaluse/reveal.js"></script>
+<script src = "generaluse/timeseries_sameaxis.js"></script>
+<script src = "eurostock/euromap.js"></script>
+<script src = "eurostock/eurofreq.js"></script>
 <script>
 
     drawtimeseries('eurostock/data/rainactmunich.csv', 'rainact', 'Rainfall time series in Munich', 'Date', 'Rainfall / mm',['#1100ff']);

@@ -1,0 +1,77 @@
+h1 {
+    color: blueviolet;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.project {
+    font-size: 2em;
+}
+
+#bullettitle {
+    color: rgb(67, 156, 200);
+}
+
+body {
+    background-color: #d6ecec;
+    margin: 0;
+    padding: 0;
+}
+
+#status {
+    text-align: center;
+    font-size: 1.8em;
+}
+
+#network-config-form {
+    text-align: center;
+}
+
+label {
+    font-size: 1.1em;
+}
+
+/* Make elements responsive */
+canvas {
+    display: block;
+    width: 95%;
+    margin: 1px auto;
+    max-width: 600px;
+    height: auto; /* Ensures aspect ratio is maintained */
+}
+
+/* Responsive Design for Mobile */
+@media (max-width: 900px) {
+    h1 {
+        font-size: 0.9em;
+    }
+
+    label {
+        font-size: 0.9em;
+    }
+
+    #network-config-form input {
+        font-size: 0.8em;
+        width: 80%;
+        margin: 2px 0;
+    }
+
+    #status {
+        font-size: 1em;
+    }
+
+    .center-container button {
+        width: 90%;
+        padding: 4px;
+    }
+    canvas {
+        display: block;
+        width: 890px;
+        margin: 1px auto;
+        height: auto; /* Ensures aspect ratio is maintained */
+    }
+}

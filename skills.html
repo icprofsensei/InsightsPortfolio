@@ -1,0 +1,59 @@
+
+<head>
+  <title>Skills</title>
+    <link href='skills/skills.css' rel="stylesheet">
+    <script src="//d3js.org/d3.v3.min.js"></script>
+
+</head>
+<body style=height:1500px>
+  <include src="base.html"></include>
+    <h1 style="text-align: center">Skills Tree (in progress)</h1>
+    <div class="center-container">
+        <button onclick="drawtree('skills/skilltree.json', '#tree', 'vert', 'translate(0, 40)', secwid - 40, sechei )" style="font-size: 2em" >Reveal Tree</button>
+    </div>
+    <section>
+    <div class="tree-container" id="tree"></div>
+</section>
+<div>
+    <h1 style="text-align: center">Project Types</h1>
+
+</div>
+<script src="{% static 'generaluse/tree.js' %}"></script>
+    <script>
+        
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                reveals[i].classList.add("active");
+                } else {
+                reveals[i].classList.remove("active");
+                }
+            }
+            }
+        window.addEventListener("scroll", reveal, {passive: true});
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const slideElements = document.querySelectorAll(".slide-in");
+
+            const observer = new IntersectionObserver(
+                (entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("slide-in-visible");
+                            observer.unobserve(entry.target); // Stop observing once visible
+                        }
+                    });
+                },
+                { threshold: 0.01 } // Trigger when 1% of element is visible
+            );
+
+            slideElements.forEach(el => observer.observe(el));
+        });
+    </script>
+    
+</body>
+{% endblock %}

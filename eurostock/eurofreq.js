@@ -21,6 +21,7 @@ function arraymaker(fileloc) {
                     }
                 });
             })
+            console.log(staticFilePath)
             .catch(error => {
                 console.error(`Error loading the CSV file from ${fileloc}:`, error);
                 reject(error);

@@ -7,6 +7,3 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-            let slideIndex = 1;
-.alt;
-}

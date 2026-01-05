@@ -127,7 +127,7 @@ drawhisto('extremism/age.csv', 'Age', '#000000', 'Age of survey participants', '
 drawbar('extremism/incomebar.csv', 'Income','Annual income for survey participants');
 drawpie('extremism/religionpie.csv', 'Religion','Religious Beliefs of survey participants');
 drawpie('extremism/qualificationpie.csv', 'Education','Highest level of education reached by survey participants');
-drawscatter('extremism/polextscatter.csv', 'Extremism-Politics','Scatter plot of participant political leaning and participant belief in the efficacy of violence', 'Political leaning', 'Belief in the efficacy of violence');
+drawscatter('extremism/polextscatter.csv', 'Extremism-Politics','Scatter plot of participant political leaning and participant belief in the efficacy of violence', 'Political leaning', 'Belief in the efficacy of violence', 'x', 'value');
 tablepop(document.getElementById('Tablefragment').querySelector('tbody'), 'extremism/fragment.csv');
 </script>
 </body>

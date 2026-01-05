@@ -1,0 +1,331 @@
+{
+    "nodes": [
+        {
+            "id": "0",
+            "data": {
+                "label": "QC Solar"
+            }
+        },
+        {
+            "id": "1",
+            "data": {
+                "label": "Jinko Solar"
+            }
+        },
+        {
+            "id": "2",
+            "data": {
+                "label": "Array Technologies"
+            }
+        },
+        {
+            "id": "3",
+            "data": {
+                "label": "Canadian Solar Inc"
+            }
+        },
+        {
+            "id": "4",
+            "data": {
+                "label": "Daqo New Energy Corp."
+            }
+        },
+        {
+            "id": "5",
+            "data": {
+                "label": "Enphase Energy"
+            }
+        },
+        {
+            "id": "6",
+            "data": {
+                "label": "First Solar"
+            }
+        },
+        {
+            "id": "7",
+            "data": {
+                "label": "FTC Solar"
+            }
+        },
+        {
+            "id": "8",
+            "data": {
+                "label": "P2 Solar Inc"
+            }
+        },
+        {
+            "id": "9",
+            "data": {
+                "label": "Sunrun"
+            }
+        },
+        {
+            "id": "10",
+            "data": {
+                "label": "Shoals Technologies"
+            }
+        },
+        {
+            "id": "11",
+            "data": {
+                "label": "TOYO Co."
+            }
+        },
+        {
+            "id": "12",
+            "children": [
+                "7",
+                "10"
+            ]
+        },
+        {
+            "id": "13",
+            "children": [
+                "9",
+                "11"
+            ]
+        },
+        {
+            "id": "14",
+            "children": [
+                "12",
+                "13"
+            ]
+        },
+        {
+            "id": "15",
+            "children": [
+                "6",
+                "14"
+            ]
+        },
+        {
+            "id": "16",
+            "children": [
+                "4",
+                "15"
+            ]
+        },
+        {
+            "id": "17",
+            "children": [
+                "1",
+                "5"
+            ]
+        },
+        {
+            "id": "18",
+            "children": [
+                "3",
+                "16"
+            ]
+        },
+        {
+            "id": "19",
+            "children": [
+                "2",
+                "18"
+            ]
+        },
+        {
+            "id": "20",
+            "children": [
+                "8",
+                "17"
+            ]
+        },
+        {
+            "id": "21",
+            "children": [
+                "19",
+                "20"
+            ]
+        },
+        {
+            "id": "22",
+            "children": [
+                "0",
+                "21"
+            ]
+        }
+    ],
+    "edges": [
+        {
+            "source": "12",
+            "target": "7",
+            "style": {
+                "stroke": "#feee66",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "12",
+            "target": "10",
+            "style": {
+                "stroke": "#feee66",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "13",
+            "target": "9",
+            "style": {
+                "stroke": "#feee66",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "13",
+            "target": "11",
+            "style": {
+                "stroke": "#feee66",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "14",
+            "target": "12",
+            "style": {
+                "stroke": "#feee66",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "14",
+            "target": "13",
+            "style": {
+                "stroke": "#feee66",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "15",
+            "target": "6",
+            "style": {
+                "stroke": "#cbe86b",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "15",
+            "target": "14",
+            "style": {
+                "stroke": "#cbe86b",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "16",
+            "target": "4",
+            "style": {
+                "stroke": "#99dc8b",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "16",
+            "target": "15",
+            "style": {
+                "stroke": "#99dc8b",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "17",
+            "target": "1",
+            "style": {
+                "stroke": "#72cda1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "17",
+            "target": "5",
+            "style": {
+                "stroke": "#72cda1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "18",
+            "target": "3",
+            "style": {
+                "stroke": "#72cda1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "18",
+            "target": "16",
+            "style": {
+                "stroke": "#72cda1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "19",
+            "target": "2",
+            "style": {
+                "stroke": "#62bbac",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "19",
+            "target": "18",
+            "style": {
+                "stroke": "#62bbac",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "20",
+            "target": "8",
+            "style": {
+                "stroke": "#7f69a1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "20",
+            "target": "17",
+            "style": {
+                "stroke": "#7f69a1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "21",
+            "target": "19",
+            "style": {
+                "stroke": "#7f69a1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "21",
+            "target": "20",
+            "style": {
+                "stroke": "#7f69a1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "22",
+            "target": "0",
+            "style": {
+                "stroke": "#7f69a1",
+                "lineWidth": 2
+            }
+        },
+        {
+            "source": "22",
+            "target": "21",
+            "style": {
+                "stroke": "#7f69a1",
+                "lineWidth": 2
+            }
+        }
+    ]
+}

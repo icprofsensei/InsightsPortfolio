@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+     
+<head>
+<meta charset="UTF-8">
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script src="//d3js.org/d3.v3.min.js"></script>
+<link href="generaluse/base.css" rel='stylesheet'>
+<link href="eurostock/add.css" rel='stylesheet'>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js'></script>
+<script src='https://cdn.anychart.com/releases/8.13.0/js/anychart-bundle.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+<script src="https://unpkg.com/@antv/g6@5/dist/g6.min.js"></script>
+
+<script src="https://marketing-demo.s3-eu-west-1.amazonaws.com/densityFunction/processDensity.js"></script>
+<title>Solar</title>
+<style>
+section {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       max-width: 100%; 
+}
+</style>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+</head>
+
+<body>
+
+
+         <div id='navbar' class="wrapper">
+        
+    </div>
+
+     
+<section>
+<div class="container reveal">
+<h1 style = "text-align: center">How do solar stocks inter-relate?</h1>
+<img src="solar/solarfarm.png" alt="ImageFileNotFound" width="100%" height="auto">
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Introduction</h2>
+<p style = "text-align: left">
+   To evaluate an entire industry and the interconnectedness, is important for assessing future growth. The solar industry is comprised of multiple interacting companies - some of which are dependent on parts, equipment and services from others. 
+   In this latest article, I examine how market value of these different stock options displays inter-dependence and are effected by similar investor sentiment shifts.
+</p> 
+</div> 
+</section>
+
+<section>
+<div class="container reveal">
+<h2 style = "text-align: center">Which solar stocks are we interested in?</h2>
+<p style = "text-align: center">There is a diversity of companies involved in the solar industry. Not only are there retailers and manufacturers, but research organisations and tracking technologies also play vital roles. I have taken the most relevant stocks mentioned across 2024-25 articles on solar industry reports, to collate my sample list of stocks to study inter-relatedness. </p>
+
+<div class="table-container">
+<table>
+    <tr>
+        <th>Solar Stock</th>
+        <th>Ticker</th>
+        <th>Sub-sector</th>
+    </tr>
+    <tr>
+        <td>QC Solar</td>
+        <td>301278</td>
+        <td>Infrastructure Manufacturer</td>
+    </tr>
+    <tr>
+        <td>Jinko Solar</td>
+        <td>688223</td>
+        <td>Module Manufacturer</td>
+    </tr>
+    <tr>
+        <td>Array Technologies</td>
+        <td>ARRY</td>
+        <td>Solar Trackers</td>
+    </tr>
+    <tr>
+        <td>Canadian Solar Inc</td>
+        <td>CSIQ</td>
+        <td>Module Manufacturer</td>
+    </tr>
+    <tr>
+        <td>Daqo New Energy Corp</td>
+        <td>DQ</td>
+        <td>Polysilicon Manufacturer</td>
+    </tr>
+    <tr>
+        <td>Enphase Energy Inc</td>
+        <td>ENPH</td>
+        <td>Battery Storage</td>
+    </tr>
+    <tr>
+        <td>First Solar</td>
+        <td>FSLR</td>
+        <td>Module Manufacturer</td>
+    </tr>
+    <tr>
+        <td>FTC Solar</td>
+        <td>FTCI</td>
+        <td>Solar Trackers</td>
+    </tr>
+    <tr>
+        <td>P2 Solar Inc</td>
+        <td>PTOS</td>
+        <td>Research And Development</td>
+    </tr>
+    <tr>
+        <td>Sunrun</td>
+        <td>RUN</td>
+        <td>Battery Storage</td>
+    </tr>
+    <tr>
+        <td>Shoals Technologies</td>
+        <td>SHLS</td>
+        <td>EBOS (Electrical Balance of Systems)</td>
+    </tr>
+    
+</table>
+</div>
+<p>Access financial data through my github repo <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a></p>
+</div>
+</section>
+        
+
+     
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">  Solar stocks display complex interaction webs...</h2>
+<hr>
+<p style = "text-align: left">
+Firstly, I observed the last year of data (December 2024 - December 2025) to investigate the distance correlation between various different solar stocks. 
+The distance correlation is a suitable measure for stock associations since it can measure non-linear relationships between variables. 
+</p>
+<hr>
+<div style = "height: 500px" id = "solarheatmap"></div>
+<hr>
+<p style = "text-align: left">
+The data here uses the viridis colour scale to indicate the closeness of the associations formed by the distance correlation coefficient. Purple indicates a lower association degree compared to yellow which indicates a close association. </p>
+<hr>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">  Visualising these interactions...</h2>
+
+<hr>
+<p style = "text-align: left">
+To visualise the associations in this heatmap, I created a clustered dendrogram in SciPy by subtracting the distance coefficient from 1 - since high values should show greater dissimilarity. I then parsed this dendrogram object using the G6 javascript package to produce the dendrogram below.
+Whilst there are different available methods for finding the most similar nodes, the below dendrogram can illustrate which stocks are closely associated - this might allude to possible interactions and dependencies. 
+For example, two stocks' values might be closely tied together because they are supply-chain dependent - the business success/ failures of one enterprise will directly effect the fortunes of another. 
+
+</p>
+<hr>
+
+
+<div style = "height: 700px" id = "stocksimilarity"></div>
+<hr>
+<p style = "text-align: left">
+Here, on the one hand, we can see that technologies such as QC Solar and P2 Solar Inc are most distantly associated that the other stocks. 
+QC Solar is a chinese solar company focusing on connecting photovoltaic (PV) modules with powerplants. Their geographical isolation from western markets may make them less closely associated with the other stocks in the study. 
+P2 Solar is a candadian solar research and development company focused on solar technology improvement and software. Their early growth stage make make them again associate less closely with more established players in the solar industry,
+On the other hand, we can see that FTC Solar and Shoals Technologies form the closest associations (they had high associations illustrated by distance correlation coefficients being close to 1)
+</p>
+<hr>
+
+</div>
+</section>
+
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">The most closely associated stocks are FTC Solar and Shoals Technology</h2>
+<hr>
+<p style = "text-align: left">
+FTC Solar make solar trackers - such as the 1P Pioneer, for maximising the efficiency of panels by adjusting panel orientation towards the sun. They are headquartered out of Austin Texas and fundamentally aim to increase energy production through panel optimisation and installation speed. 
+Shoals Technologies provide a similar support function. Through their engineering teams, they are the leading supplier of Electrical Balance of System (EBOS) solutions. They optimise for efficiency throughout the solar implementation process, from sourcing, manufacturing and installation. 
+Their products include Big Lead Assembly (BLA) trunks which sits above the ground to wire a solar field, alongside other electrical infrastructure such as transition boxes, combiners and homeruns. 
+</p>
+<hr>
+<div style = "height: 500px" id = 'ftcshls'></div>
+<hr>
+<p style = "text-align: left">
+As the scatter plot above demonstrates, there is a moderately strong positive correlation between FTC Solar and Shoals Technologies over the past year of opening adjusted stock prices. This indicates that there may be similar market pressures effecting the price of both stocks - such as the need for large-scale solar farm infrastructure and optimisation support.  
+</p>
+<hr>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">How does this association vary over time?</h2>
+<hr>
+<p style = "text-align: left">
+Of course initially, I have demonstrated an association over a year time frame. But is this a short-term phenomenon? By observing samples centered over 50 day timeframes, I could demonstrate the variation in distance correlation coefficient over a 5-year time span. 
+Evidently, there is a lot of noise and fluctuations between a high 0.97 correlation coefficient to a less closely associated 0.22. Importantly, it is clear that despite the noise there is still an underlying association present, at a base level of around 0.22 - 
+potentially indicating industry-wide effects.
+</p>
+<hr>
+<div style = "height: 500px" id = "ma49"></div>
+<p style = "text-align: left">
+</p>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">What if we increase the time-window?</h2>
+<hr>
+<p style = "text-align: left">
+With a broader time-window, much of the short term fluctuations fade, revealing long-term association effects between FTC Solar and Shoals technologies. There appears to be three separate time periods where associations between the two organisations peak: Spring 2022, Summer 2023 and Winter 2025.
+</p>
+<hr>
+
+<div style = "height: 500px" id = "ma99"></div>
+<p style = "text-align: left">
+</p>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">What causes the long term trends?</h2> 
+<hr>
+<p style = "text-align: left">
+Finally, we can see long-term trends and the smoothest curve yet when we extend the time window around each midpoint. The three aforementioned peaks in association become most pronounced here, perhaps indicating large-scale shifts in the need for solar infrastructure and support technologies. For instance, this may coincide with large-scale solar farming projects being deployed. 
+</p>
+<hr>   
+<div style = "height: 500px" id = "ma199"></div>
+
+</div>
+</section>
+
+     
+
+
+<section>
+<div class="container reveal">
+<h2 style = "text-align: center">What comes next?</h2>
+<p style = "text-align: center">
+    As the second data story, focusing on solar power, the current momentum behind solar stocks can be better understood by analysing associations between different solar stocks. 
+    An interesting point for future research could be the three distinct peaks in these two companies' associations - were there external factors effecting these two companies or did they face similar internal financial situations (thus effecting valuation) ?
+    Additionally, it could be intriguing to begin construction of an overall solar index of association, combining the stock values of multiple different solar stocks to find underlying association patterns displaying the industry in general. 
+    This could later be compared to existing ETFs for solar power such as SPDR S&P Kensho Clean Power ETF. 
+</p>
+<p style = "text-align: center"> Coming up next, I want to begin further disecting the complex interaction webs between solar stocks.
+</p>
+<h2  style = "text-align: center">Data Sources</h2>
+<p style = "text-align: center">Full data has been obtained by <a href ="https://www.alphavantage.co/documentation/" >alphavantage</a> using my own custom
+GUI for climate stock data extraction - full source code can be obtained on github <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a></p>
+</div>
+</section>
+
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src = "generaluse/navbar.js"> </script>
+<script src = "eurostock/polarscsvline.js"></script>
+<script src = "generaluse/heatmap.js"></script>
+<script src = "solar/dendrogram.js"></script>
+<script src = "generaluse/reveal.js"></script>
+<script src = "generaluse/scatter.js"></script>
+<script>
+    fetch("navbar.html")
+    .then(res => res.text())
+
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+    })
+</script>
+
+<script>
+
+drawheatmap("solar/data/solarheatmap.csv", 'solarheatmap', 'Heatmap of distance correlation between solar stocks over the last year', 'Solar Organisation Name', 'Solar Organisation Name') ;
+drawdend('stocksimilarity', 'solar/data/solarstocks.json');
+drawscatter("solar/data/ftcshls.csv", 'ftcshls', 'Scatter plot of FTC Solar against Shoals Technology (Dec 2024 - Dec 2025)', 'FTC Solar', 'Shoals Technology','ftcsolar','shoalssolar', '#32a88d');
+drawlinefromcsv("solar/data/movingavg49.csv", 'ma49', 'Time Series of 50 day moving average for distance correlation between FTC Solar and Shoals', 'Day', 'Distance Correlation Coefficient for time-window (25 days around particular date)', '#a83248', 'date', ['correlation']) ;
+drawlinefromcsv("solar/data/movingavg99.csv", 'ma99', 'Time Series of 100 day moving average for distance correlation between FTC Solar and Shoals', 'Day', 'Distance Correlation Coefficient for time-window (50 days around particular date)', '#e8a215', 'date', ['correlation']) ;
+
+drawlinefromcsv("solar/data/movingavg199.csv", 'ma199', 'Time Series of 200 day moving average for distance correlation between FTC Solar and Shoals', 'Day', 'Distance Correlation Coefficient for time-window (100 days around particular date)', '#c1e815', 'date', ['correlation']) ;
+
+
+</script>
+</body>

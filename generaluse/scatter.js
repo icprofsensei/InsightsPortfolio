@@ -34,7 +34,7 @@ function arraymaker(fileloc) {
             });
     });
 }
-function drawscatter(file, html, title, xlab, ylab){
+function drawscatter(file, html, title, xlab, ylab, col1, col2, rancol){
     anychart.onDocumentReady(async function () {
         try {
             const data = await arraymaker(file);
@@ -42,11 +42,21 @@ function drawscatter(file, html, title, xlab, ylab){
                 console.error("No data loaded from CSV.");
                 return;
             }
-            
-            // Set chart properties
+            var resdata = []
+            for (let i = 0; i < data.length; i++){
+                let x = data[i][col1]
+                let value = data[i][col2]
+                resdata.push({'x': x, 'value': value})
+            }
+            console.log(resdata)
             chart = anychart.scatter();
-            const scatter = chart.marker(data);
-            scatter.fill(getRandomColor())
+            const scatter = chart.marker(resdata);
+            if (rancol == 'YES'){
+                scatter.fill(getRandomColor());
+                }
+                else {
+                    scatter.fill(rancol)
+                }
             scatter.stroke(getRandomColor())
             chart.title(title);
             chart.title().fontColor("black");

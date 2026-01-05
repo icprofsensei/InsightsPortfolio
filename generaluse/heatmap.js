@@ -64,7 +64,6 @@ function drawheatmap(file, element, title, xlab, ylab) {
                 "#cbe86b", "#feee66"
               ];
     
-            chart.height(sechei);
             chart.margin(0);
             chart.xAxis().title(xlab)
             chart.yAxis().title(ylab)

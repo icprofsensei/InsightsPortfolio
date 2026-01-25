@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+     
+<head>
+<meta charset="UTF-8">
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css"
+/>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<link href="generaluse/base.css" rel='stylesheet'>
+<link href="eurostock/add.css" rel='stylesheet'>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js'></script>
+<script src='https://cdn.anychart.com/releases/8.13.0/js/anychart-bundle.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+<script src="https://unpkg.com/@antv/g6@5/dist/g6.min.js"></script>
+<script src="https://marketing-demo.s3-eu-west-1.amazonaws.com/densityFunction/processDensity.js"></script>
+<title>TOYO Solar</title>
+<style>
+section {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       max-width: 100%; 
+}
+</style>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+</head>
+
+<body>
+
+
+         <div id='navbar' class="wrapper">
+        
+    </div>
+
+     
+<section>
+<div class="container reveal">
+<h1 style = "text-align: center">How to forecast short-term TOYO Solar stock prices?</h1>
+<img src="solar/TOYO.png" alt="ImageFileNotFound" width="100%" height="auto">
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Introduction</h2>
+<p style = "text-align: left">
+   TOYO Solar are a relatively new member to the solar stock ecosystem, founded in November 2022, with headquarters in Japan. Despite their youth, they have price movements which closely associate with SunRun, as well as FTC Solar and Shoals Technologies.
+   Currently, most solar cells use Passivated Emitter Rear Contact (PERC) which boosts cell efficiency by reflecting unused light back into the cell for more energy absorption.
+   TOYO Solar specialise in N-type photovoltaic (PV) technologies called TOPCon (Tunnel Oxide Passivated Contact) solar cells. This technology is forecast to have a 60% market share in 2033 according to <a href="https://www.alternergy.co.uk/blog/post/topcon-solar-cells">alternergy.</a>
+    
+
+</p> 
+</div> 
+</section>
+        
+
+     
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center"> TOYO stock price</h2>
+<hr>
+<p style = "text-align: left">
+Here, we can understand the sharp rise in the value of TOYO. Part of this may be driven by the August 2025 acquistion of VSUN (from Vitenam Sunergy Joint Stock Company). In this data story, I am interested in investigating the use of ARIMA modelling for forecasting future short-term stock movement, and whether this methodology can semi-accurately predict the range of reasonable values for TOYO Solar.
+</p>
+<hr>
+<div style = "height: 500px" id = "toyohist"></div>
+<hr>
+<p style = "text-align: left">
+The data in the chart above shows the daily close price of TOYO stock. For my analysis, I need to utilise a more fine-grained datasource to get hourly (rather than daily) ticker data. </p>
+<hr>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">  ARIMA Modelling</h2>
+
+<hr>
+<p style = "text-align: left">
+I elected to use an Autoregressive Integrated Moving Average (ARIMA) model which is well-suited for time-series forecasting.
+It can be broken down into three composite mathematical ideas <br>
+1) AR - Autoregressive = Trends are built from past values (lags) which are then used to forecast the current value. <br>
+2) I - Integrated = Observations are subtracted from one another (differencing) to eliminate trends and seasonality. This makes the data reach stationarity. <br>
+3) MA - Moving Average = Dependence of the current observation on previous forecast errors. 
+</p>
+<hr>
+
+
+
+<p style = "text-align: left">
+        The general ARIMA equation:
+        <br>
+        <br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+<mrow>
+           <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mi>c</mi>
+            <mi>+</mi>
+            <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> 1 </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t - 1 </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mo>... </mo>
+            <mi> +</mi>
+            <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> p </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t - p </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <msub>
+                <mo> &#952; </mo>
+                <mrow>
+                    <mn> 1 </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> &#949; </mi>
+                <mrow>
+                    <mn> t - 1 </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mo>... </mo>
+            <mi> +</mi>
+            <msub>
+                <mo> &#952; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> &#949; </mi>
+                <mrow>
+                    <mn> t - q </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+             <msub>
+                <mi> &#949; </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            </mrow>
+            <mspace>
+            
+
+</math> 
+</p>
+<hr>
+<p>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+    
+</math>
+= Differenced series value at time point t <br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> p </mn>
+                </mrow>
+            </msub>
+</math>
+ = Coefficients for the past autoregression at specific time points. <br>
+ <math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+    
+</math>
+ = Past values of the differenced series at time points denoted by p <br>
+  <math xmlns="https://www.w3.org/1998/Math/MathML/">
+ <msub>
+                <mo> &#952; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            </math>
+= Coefficients for the past moving average error coefficients. <br>
+  <math xmlns="https://www.w3.org/1998/Math/MathML/">
+ <msub>
+                <mo> &#949; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            </math>
+= Moving average error value at time points denoted by q. <br>
+c = Constant
+</p>
+<hr>
+<p>
+We can observe the mathematical ideas as follows:
+</p>
+<hr>
+<p>
+1) Integrated (Differencing): (d) <br><br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+<mrow>
+           <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <msub>
+                <mi> y </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            <mo>-</mo>
+            <msub>
+                <mi> y </mi>
+                <mrow>
+                    <mn> t - 1  </mn>
+                </mrow>
+            </msub>
+        
+            
+            
+
+</math> 
+<br><br>
+A condition for ARIMA is that the series is <a href = "https://otexts.com/fpp2/stationarity.html">stationary.</a>
+This means that there will be no predictable long-term patterns to the data and values of the mean and variance will remain constant over <a href = "https://blog.quantinsti.com/stationarity/">time.</a>
+Financial stock data is not like this. We therefore perform differencing on the initial series (as shown by the above equation) to calculate a differences series. The number of times differencing has to be 
+carried out in order to reach stationarity determines d - the order of differencing. I tested for stationarity using the Augmented Dickey-Fuller <a href = "https://machinelearningplus.com/time-series/augmented-dickey-fuller-test/">(ADF)</a> test.
+</p>
+<hr>
+<p>
+2) Autoregression: (p) <br><br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+<mrow>
+           <msub>
+                <mi> y </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mi>c</mi>
+            <mi>+</mi>
+            <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> 1 </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> y </mi>
+                <mrow>
+                    <mn> t - 1 </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mo>... </mo>
+            <mi> +</mi>
+            <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> p </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> y </mi>
+                <mrow>
+                    <mn> t - p </mn>
+                </mrow>
+            </msub>
+            
+            
+
+</math> 
+<br><br>
+This part essentially means that previous values of the model (which can be stored in the variable p) determine the current <a href = "https://www.geeksforgeeks.org/data-science/model-selection-for-arima/">observation</a>
+p can be a list of values, eg: [1, 5, 9] would indicate that we should check the values at t - 1, t - 5, t - 9 to determine the current observation. 
+</p>
+<hr>
+<p>
+3) Moving Average: (q)<br><br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+<mrow>
+           <msub>
+                <mi> y </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mi>c</mi>
+            <mi>+</mi>
+            <msub>
+                <mo>  &#952; </mo>
+                <mrow>
+                    <mn> 1 </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi>  &#949; </mi>
+                <mrow>
+                    <mn> t - 1 </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mo>... </mo>
+            <mi> +</mi>
+            <msub>
+                <mo>  &#952; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            <msub> 
+                <mi>  &#949; </mi>
+                <mrow>
+                    <mn> t - q </mn>
+                </mrow>
+            </msub>
+            
+            
+
+</math> 
+<br><br>
+This part essentially means that previous products of the error and moving average (which can be stored in the variable q) determine the current <a href = "https://www.geeksforgeeks.org/data-science/model-selection-for-arima/">observation</a>
+q can be a list of values, eg: [2, 3, 8] would indicate that we should check the values at t - 2, t - 3, t - 8 to determine the current observation. 
+</p>
+</div>
+</section>
+
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Cumulative Wealth Index</h2>
+<hr>
+<p style = "text-align: left">
+The <a href = "https://www.scribd.com/document/905674482/Cumulative-Wealth-Index-or-a-Wealth-Relative">cumulative wealth</a> index can be a helpful comparison tool to understand how one's investment yields returns to the investor. 
+We can calculate returns simply as: <br><br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+<mrow>
+            <mo> Return </mo>
+            <mo>=</mo>
+            <mfrac>
+                <mn> Final Price of Asset</mn>
+                <mn>Initial Price of Asset</mn>
+            </mfrac>
+            <mo>- 1</mo>
+</math> 
+<br>
+<br>
+Return is therefore a decimal value: 0 means no change in price, whereas a positive return would mean an increase in value, whilst a negative return would mean a decrease in value. 
+If we take the cumulative product of each hourly return, we can calculate the total running return on investment at a certain time period.<br><br>
+By applying the following formula to each daily return (R): <br><br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <mo> Cumulative Return </mo>
+    <mo>=</mo>
+  <mrow>
+    <munderover>
+      <mo>∏</mo>
+      <mrow>
+            <mi>i</mi>
+            <mo>=</mo>
+            <mn>1</mn>
+        </mrow>
+      <mi>n</mi>
+    </munderover>
+    <msub>
+        <mi>(R + 1)</mi>
+        <mi>i</mi>
+    </msub>
+  </mrow>
+</math>
+<br><br>
+I could produce the following graph for the cumulative wealth index, showing the scaling factor for an investment in TOYO over this time period. 
+</p>
+<hr>
+<div style = "height: 500px" id = "wealth"></div>
+<hr>
+<p style = "text-align: left">
+As the line graph above demonstrates, the cumulative wealth index closely matches the stock price therefore providing the foundations for a more reliable tool for estimations of wealth comparisons between different stocks. </p>
+<hr>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Building a model</h2>
+<hr>
+
+<p style = "text-align: left">
+Firstly, here are the list of package imports I needed to make this project. I found a number of other ARIMA tutorials helpful, 
+however, I particularly used <a href = "https://www.datacamp.com/tutorial/arima">datacamp</a> and <a href = "https://medium.com/@mvdg2001/stock-price-forecast-with-automatic-arima-order-selection-5593950a5393">Michiel van der Groen</a> on notion.
+    <pre><code class="language-python">
+import pandas as pd
+import duckdb 
+import matplotlib.pyplot as plt 
+from statsmodels.tsa.stattools import adfuller
+from statsmodels.tsa.arima.model import ARIMA
+  </code>  </pre>
+
+I used my Github green stock data engine (which can be found <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a>), to generate a dataset
+for TOYO covering the last 2 years of data at an hourly rate (from yfinance). Next, I produced training and testing ratios using the standard 80:20 ratio. 
+</p>
+
+    <pre><code class="language-python">
+# path is where I saved my green stock database (see my github)
+con = duckdb.connect(path, read_only = True)
+TOYO2PREV = con.sql("SELECT * FROM TICKER_2YPREV_TOYO;").df()
+TOYO2PREV['DATETIME'] = pd.to_datetime(TOYO2PREV['DATETIME'])
+TOYO2PREV = TOYO2PREV.set_index('DATETIME')
+con.close()
+TOYOclose = TOYO2PREV[['Close']]
+rows = TOYOclose.shape[0]
+trainval = round(rows / 5 * 4)
+testval = rows - trainval
+  </code>  </pre>
+
+<hr>
+
+<p style = "text-align: left">
+</p>
+</div>
+</section>
+
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Performing Differencing</h2>
+<hr>
+    <pre><code class="language-python">
+d = 0 
+series = TOYOclose.iloc[:trainval]['Close']
+while d >= 0:
+    result = adfuller(series.dropna())
+    criticalval = result[1]
+    if criticalval < 0.05:
+        print(d)
+        break
+    d += 1
+    series = series.diff()
+  </code>  </pre>
+
+<p style = "text-align: left">
+I wrote the above code snipped to iterate through my training dataset for the TOYO stock. 
+Here, it applies the adfuller test to the series and if the result is not below 0.05, it will continue differencing the series until a stationary series is reached. 
+For my data on TOYO, it reached a stationary series with d = 1
+</p>
+<hr>
+<div style = "height: 500px" id = "diff"></div>
+
+
+</div>
+
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Calculating p and q</h2>
+<hr>
+<p style = "text-align: left">
+First, I ran the Autocorrelation Function (ACF) test - this determines the autocorrelation values of the time series at different lags. 
+It outputs two items: <br>
+1. A list of lags between successive values in the series (starting with the current value). Hence, the first item is always 1 and then it will show the decay rate in correlation for values in the series (across the full training dataset). <br>
+2. A list of confidence intervals for each of the lags in (1) to determine whether they are statistically significant. The lags which are statistically significant should be used to form the p variable for the final model. 
+</p>
+<p style = "text-align: left">
+Since the overall time series is directional, I will need to build a model which looks at longer-term features. I will therefore run the model building process twice, once for daily closing price data and once with hourly closing price data. 
+I would expect that the hourly model would show short-term effects of the data better, whereas the daily data would obtain better estimates of long-term trends. 
+<br>
+Here is the code I wrote to calculate p (sig_acf)- modified from van der Groen, but adjusted to correctly measure whether correlations are outside confidence intervals and alpha = 0.05 to resemble the parameters for the default plots:
+
+                <pre><code class="language-python">
+    from statsmodels.tsa.stattools import acf
+    acf_coef = acf(TOYOclose.iloc[:trainval]['close'].dropna(), alpha=0.05)
+    sig_acf = []
+    for i in range(1, len(acf_coef[0])):
+        interval = acf_coef[1][i][1] - acf_coef[1][i][0]
+        intmax = interval / 2 
+        intmin =  - interval /2 
+        if acf_coef[0][i] > intmax or acf_coef[0][i] < intmin:
+            sig_acf.append(i)
+
+    sig_acf
+    print(sig_acf)
+            </code>  </pre>
+</p>
+<p style = "text-align: left">
+Equally, for q (sig_pacf):
+            <pre><code class="language-python">
+    from statsmodels.tsa.stattools import pacf
+    pacf_coef = pacf(TOYOclose.iloc[:trainval]['Close'], alpha=0.05)
+    sig_pacf = []
+    for i in range(1, len(pacf_coef[0])):
+        interval = pacf_coef[1][i][1] - pacf_coef[1][i][0]
+        intmax = interval / 2 
+        intmin =  - interval /2 
+        if pacf_coef[0][i] > intmax or pacf_coef[0][i] < intmin:
+            sig_pacf.append(i)
+
+    sig_pacf
+        </code>  </pre>
+   </p>
+      <p style = "text-align: left">
+        I set the 'trend' parameter to 't' if order =  1, since this would produce a linear trend, whereas if order = 0 (ie - already stationary), then trend = 'c' to allow a constant non-zero mean.
+Overall, the daily model has the final order: 
+<pre><code class="language-python">
+    model = ARIMA(TOYOclose.iloc[:trainval]['close'],
+            order = ([1, 8, 12], 1, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), trend = 't').fit()
+        </code>  </pre>
+</p>
+<p style = "text-align: left">
+Whilst the hourly model has the final order: 
+<pre><code class="language-python">
+    model = ARIMA(TOYOclose.iloc[:trainval]['Close'],
+            order = ([1, 19], 1, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]), trend = 't').fit()
+        </code>  </pre>
+</p>
+
+
+<hr>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">How does a day-interval ARIMA model perform?</h2> 
+<hr>
+<p style = "text-align: left">
+First, let's examine the modelling performance of the day-interval ARIMA model on its testing set.
+
+</p>
+<hr>   
+<div style = "height: 500px" id = "daily">
+</div>
+<hr>
+<p style = "text-align: left">
+The model is shown by the red lines: upper and lower bounds are determined by the mean standard error.
+Overall, the model seems to perform moderately well at predicting the overall trend of TOYO, although it fails to predict the short-term volatility.
+For instance, almost immediately for the predicted time period, the actual TOYO stock price exceeds the standard error + mean calculated upper bound for the price. 
+</p>
+<hr>
+
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">How does a hour-interval ARIMA model perform?</h2> 
+<hr>
+<p style = "text-align: left">
+We can compare this to the hour-interval ARIMA and its perforance on its own testing set.
+
+</p>
+<hr>   
+<div style = "height: 500px" id = "hourly">
+</div>
+<hr>
+<p style = "text-align: left">
+The model seems to more closely bound the actual price of TOYO, although it demonstrates even less volatility compared to the actual TOYO stock price.
+The predicted mean essentially forms a linear model, which is unlikely to continue at this rate long-term, potentially making it a less reliable indicator for TOYO's price. 
+This could be due to the autoregressive terms - since they are taken on an hourly rate, at most it looks back within a few days to inform future price movements. 
+For instance, when a moving average in the hourly dataset looks back up to 32 values, at most this is within the space of 2 days. This may be unreliable for predicting future price movements long-term.
+By comparison, the daily model look back far further in-time (eg: up to 15 days) for moving-average coefficients - this may make it a more robust indicator for long-term price movements.
+</p>
+<hr>
+
+</section>
+    
+
+
+<section>
+<div class="container reveal">
+<h2 style = "text-align: center">What comes next?</h2>
+<p style = "text-align: center">
+    ARIMA modelling is only one possible methodology for modelling price volatility and movement for climate stocks. 
+    Climate stocks are also effected by a variety of external factors - such as company news, environmental change, policy change and technology.
+
+
+</p>
+<p style = "text-align: center"> A potential next step with ARIMA modelling could be to use it on short-term time intervals to predict price changes. 
+    I could potentially create a mock portfolio of different climate stocks and utilise ARIMA modelling as a potential trading strategy to continually rebalance this model portfolio in order to maximise returns.
+</p>
+<h2  style = "text-align: center">Data Sources</h2>
+<p style = "text-align: center">Full data has been obtained by <a href ="https://www.alphavantage.co/documentation/" >alphavantage</a> using my own custom
+GUI for climate stock data extraction - full source code can be obtained on github <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a></p>
+</div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src = "generaluse/navbar.js"> </script>
+<script src = "eurostock/polarscsvline.js"></script>
+<script src = "solar/polarsdatetimeline.js"></script>
+<script src = "generaluse/reveal.js"></script>
+<script src = "generaluse/scatter.js"></script>
+<script>
+    fetch("navbar.html")
+    .then(res => res.text())
+
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+    })
+</script>
+
+<script>
+
+drawlinefromcsvdt("solar/data/TOYOWEALTH.csv", 'wealth', 'Time Series of Cumulative Wealth Index of TOYO Solar', 'Hour', 'Cumulative Wealth Index', '#a83248', 'DATETIME', ['Wealth']) ;
+drawlinefromcsvdt("solar/data/TOYODIFF.csv", 'diff', 'Time Series of differenced closing price of TOYO Solar - order = 1', 'Hour', 'Differenced Stock Price (order = 1)', '#325ca8', 'DATETIME', ['Close_Diff']) ;
+drawlinefromcsv("solar/data/TOYOHIST.csv", 'toyohist', 'Time Series of TOYO Solar Closing Stock Price', 'Day', 'Stock Price', '#e8a215', 'date', ['close']) ;
+drawlinefromcsv("solar/data/TOYODAILY.csv", 'daily', 'Model performance of daily close price ARIMA', 'Day', 'Stock Price', ['#085401', '#13ba04', '#fa707c', '#f7a3aa', '#fa394a' ], 'date', ['historic (training)','actual (test)','ARIMA (mean) prediction','ARIMA (upper bound)','ARIMA (lower bound)']) ;
+drawlinefromcsvdt("solar/data/TOYOHOURLY.csv", 'hourly', 'Model performance of hourly close price ARIMA', 'Hour', 'Stock Price', ['#0c6ef7', '#8ebbfa', '#e3bf4b', '#dec881', '#deaa04' ], 'DATETIME', ['historic (training)','actual (test)','ARIMA (mean) prediction','ARIMA (upper bound)','ARIMA (lower bound)']) ;
+
+
+
+</script>
+</body>

@@ -35,7 +35,7 @@ function arraymaker(fileloc) {
             });
     });
 }
-function drawlinefromcsv(file, html, title, xlab, ylab, rancol, col1, col2) {
+function drawlinefromcsvdt(file, html, title, xlab, ylab, rancol, col1, col2) {
     anychart.onDocumentReady(async function () {
         try {
             const data = await arraymaker(file);
@@ -79,7 +79,7 @@ linegraph.stroke({color: rancol[j], thickness: 3});
             chart.legend().fontSize(10);
             chart.title(title);
             chart.title().fontSize(20)
-            if (col1.toUpperCase() == 'DATE') {
+            if (col1.toUpperCase() == 'DATETIME') {
                 chart.xAxis().labels().format(function () {
                     var date = new Date(this.value);
                     return date.toLocaleDateString();

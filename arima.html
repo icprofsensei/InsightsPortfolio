@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+     
+<head>
+<meta charset="UTF-8">
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.5.0/themes/prism.min.css"
+/>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<link href="generaluse/base.css" rel='stylesheet'>
+<link href="eurostock/add.css" rel='stylesheet'>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js'></script>
+<script src='https://cdn.anychart.com/releases/8.13.0/js/anychart-bundle.min.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/jstat@latest/dist/jstat.min.js"></script>
+<script src="https://unpkg.com/@antv/g6@5/dist/g6.min.js"></script>
+<script src="https://marketing-demo.s3-eu-west-1.amazonaws.com/densityFunction/processDensity.js"></script>
+<title>ARIMA</title>
+<style>
+section {
+       display: flex;
+       justify-content: center;
+       align-items: center;
+       max-width: 100%; 
+}
+</style>
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous"> 
+</head>
+
+<body>
+
+
+         <div id='navbar' class="wrapper">
+        
+    </div>
+
+     
+<section>
+<div class="container reveal">
+<h1 style = "text-align: center">Modelling an ARIMA-based solar portfolio</h1>
+<img src="portfolio/solarportfolio.jpg" alt="ImageFileNotFound" width="100%" height="auto">
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Introduction</h2>
+<p style = "text-align: left">
+   In my previous data stories, I've demonstrated the forecasting potential of ARIMA models - particularly at identifying short-term stock price movements. 
+   However, this has only been demonstrated for individual stocks and specific use-cases which do not apply to the average investor. 
+   Therefore, to build on my previous work, I wanted to expand ARIMA forecasting to multiple stocks in a portfolio. In this data story, I create a hypothetical solar stock portfolio 
+   balanced across 12 different solar stocks over a historical time window. Read on to find out more!
+    
+
+</p> 
+</div> 
+</section>
+        
+
+     
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center"> Model Solar Stock Portfolio</h2>
+<hr>
+<div style = "height: 500px" id = 'piechartinitialportfolio'></div>
+
+<p style = "text-align: left">
+I created an initially balanced portfolio between all 12 solar stocks of interest. I have addressed some of these stocks in previous data stories, however, I will summarise the stocks and its company once more. 
+
+</p>
+<ul>
+    <li><a href = "https://www.qc-solar.com/">QC Solar</a> are a solar infrastructure provider founded and headquartered in China. Examples of their products include connectors, junction boxes, and cables to support solar storage systems. </li>
+    <li><a href = "https://www.jinkosolar.com/en/site/tigerneo_3">Jinko Solar</a> are a solar photovoltaic (PV) module manufacturer, specialising in half-cell technology to improve a module's response to shading founded and headquartered in China.  </li>
+    <li><a href = "https://arraytechinc.com/">Array Technologies</a> are a solar tracking technologies company, founded and headquartered in the USA, which maximises energy generation by ensuring panels are optimally oriented. </li>
+    <li><a href = "https://www.dqsolar.com/">Daqo New Energy Corp.</a> are a Chinese headquartered and founded polysilicon manufacturer. Polysilicon is a critical material for multi-crystalline and monocrystalline solar cells (currently the most efficient type of solar module)  </li>
+    <li><a href = "https://www.firstsolar.com/en-EMEA/">First Solar</a> are a solar photovoltaic (PV) module manufacturer, specialising in thin-film Cadmium Telluride (CdTe) technology which is thinner and more flexible than other module types. They are founded and headquartered in the USA.  </li>
+    <li><a href = "https://www.ftcsolar.com/">FTC Solar</a> are a a solar tracking technologies company, founded and headquartered in the USA. FTC Solar focus on ease of installation and terrain/wind adaptation.  </li>
+    <li><a href = "https://investor.p2solar.com/">P2 Solar Inc.</a> are a solar installation company founded and headquartered in Canada.  </li>
+    <li><a href = "https://www.sunrun.com/">Sunrun</a> are a home solar panel and storage provider founded and headquartered in the USA.  </li>
+    <li><a href = "https://shoals.com/en-gb/">Shoals Technologies</a> specialise in Electrical Balance Of Systems (EBOS) products for large-scale solar installations. They were founded and headquartered in the USA.    </li>
+    <li><a href = "https://www.toyo-solar.com/">TOYO Solar</a> specialise in Tunnel Oxide Passivated Contact (TOPCon) solar cells - widely considered to be the successor to Passivated Emitter Rear Contact (PERC) technology. They are headquartered and founded in Japan.   </li>
+    <li><a href = "https://www.canadiansolar.com/">Canadian Solar</a> produce solar module, inverter and storage solutions. They are founded and headquartered in Canada.  </li>
+    <li><a href = "https://enphase.com/en-gb">Enphase Energy</a> speicalise in microinverters to accompany solar modules. Alongside their solar storage solutions these are deployed all over the globe. Enphase are founded and headquartered in the USA.  </li>
+
+
+</ul>
+
+<hr>
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center"> How well did the ARIMA model forecast 5-day wealth changes?</h2>
+<hr>
+<p style = "text-align: left">
+        The general ARIMA equation:
+        <br>
+        <br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+<mrow>
+           <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            <mo>=</mo>
+            <mi>c</mi>
+            <mi>+</mi>
+            <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> 1 </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t - 1 </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mo>... </mo>
+            <mi> +</mi>
+            <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> p </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t - p </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <msub>
+                <mo> &#952; </mo>
+                <mrow>
+                    <mn> 1 </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> &#949; </mi>
+                <mrow>
+                    <mn> t - 1 </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+            <mo>... </mo>
+            <mi> +</mi>
+            <msub>
+                <mo> &#952; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            <msub>
+                <mi> &#949; </mi>
+                <mrow>
+                    <mn> t - q </mn>
+                </mrow>
+            </msub>
+            <mo>+</mo>
+             <msub>
+                <mi> &#949; </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+            </mrow>
+            <mspace>
+            
+
+</math> 
+</p>
+<p>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+    
+</math>
+= Differenced series value at time point t <br>
+<math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <msub>
+                <mo> &#934; </mo>
+                <mrow>
+                    <mn> p </mn>
+                </mrow>
+            </msub>
+</math>
+ = Coefficients for the past autoregression at specific time points. <br>
+ <math xmlns="https://www.w3.org/1998/Math/MathML/">
+    <msub>
+                <mi> y' </mi>
+                <mrow>
+                    <mn> t </mn>
+                </mrow>
+            </msub>
+    
+</math>
+ = Past values of the differenced series at time points denoted by p <br>
+  <math xmlns="https://www.w3.org/1998/Math/MathML/">
+ <msub>
+                <mo> &#952; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            </math>
+= Coefficients for the past moving average error coefficients. <br>
+  <math xmlns="https://www.w3.org/1998/Math/MathML/">
+ <msub>
+                <mo> &#949; </mo>
+                <mrow>
+                    <mn> q </mn>
+                </mrow>
+            </msub>
+            </math>
+= Moving average error value at time points denoted by q. <br>
+c = Constant
+</p>
+<hr>
+<div style = "height: 500px" id = 'performance'></div>
+
+<hr>
+<p style = "text-align: left">
+The results above stem from a moving 50 day sample and a 80:20 training/testing split over this sample period for each stock. As evidenced above, the model did not forecast to a high degree of accuracy over the 5 day time period as I had hoped. 
+There are a large number of predictions which were incorrect (either false positives or negatives) which could lead to the portfolio losing wealth / an opportunity to gain wealth. 
+However, only 19% of these predictions actually would lead to the portfolio losing money via a false positive, therefore demonstrating it's potential but also need for refinement.
+</p>
+</div>
+</section>
+
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Building a portfolio pipeline</h2>
+<hr>
+
+<p style = "text-align: left">
+First, I created a dataframe loading script which I could call from my main pipeline. This would perform the necessary joins from my database.
+The scan function can be used to determine all tables in my duck db file - returning a list of table names. 
+The fetch_and_join function is used to fetch each individual table, obtain the close price and date column, then merge with all other table names.
+    <pre><code class="language-python">
+import duckdb as ddb
+import pandas as pd
+
+def scan(path, *args, **kwargs):
+    tablefilter = args[0]
+    
+    connection = ddb.connect(path, read_only = True)
+    tables = connection.sql("SHOW ALL TABLES;").df()
+    tablels = list(tables['name'])
+    if tablefilter:
+        tablels = [t for t in tablels if t.startswith(tablefilter)]
+    connection.close()
+    return tablels
+
+def fetch_and_join(path, tablels):
+    connection = ddb.connect(path, read_only = True)
+    dfls = []
+    overalldf = connection.sql(f"SELECT DATE, CLOSE {tablels[0]} FROM {tablels[0]}").df()
+    overalldf['date'] = pd.to_datetime(overalldf['date'])
+    for index, t in enumerate(tablels):
+        try:
+            if index > 0:
+                dfr = connection.sql(f"SELECT DATE, CLOSE {t} FROM {t}").df()
+                
+                dfr['date'] = pd.to_datetime(dfr['date'])
+                dfr = dfr.dropna()
+                overalldf = overalldf.merge(dfr, on = "date", how = 'left')
+        except Exception as e:
+            print(e)
+            print(t)
+    
+    connection.close()
+    return overalldf
+  </code>  </pre>
+I also developed an ARIMA model builder for each date range, following the same logic as this previous project found <a href="toyo.html">here</a>. This would construct a model and make a forecast for the final few days in the date window (overlapping with the training dataset). I developed a main pipeline to call these functions. 
+Additionally, I also used a series of portfolio balancing functions to adjust the allocations of stocks in my portfolio based on the forecast as seen below. 
+To summise, the update function tracks the status of each stock in the portfolio - for instance, if no data is available due to missing values, an ARIMA model cannot be built. 
+Therefore, for such an occurence, the update function changes the status to invalid, which then prevents other functions from adjusting allocations in the portfolio. 
+
+The expected_adjustments function makes changes to the allocations of each stock based on the ARIMA model predictions. Due to the short time range involved, the allocation changes will only very slightly modify the balance of the portfolio in order to optimise exposure to stocks expected to increase in value whilst decreasing exposure to stocks which might cause a decrease in wealth. 
+The actual_adjustments function makes changes to the newly adjusted portfolio straight after the expected_adjustments function has adjusted the weights. Here, the function represents the real-world financial behaviour of the newly adjusted portfolio based on the actual changes at the time. These may differ from the expectations as shown in the heatmap above.
+</p>
+<pre><code class="language-python">
+import pandas as pd
+
+def update(stocks, param, status):
+    for s in stocks:
+        if s['Stock'] == param:
+            s['Status'] = status
+        else:
+            continue
+    return stocks
+
+def expected_adjustments(stocks, wealthdict):
+    activestocks = wealthdict.keys()
+    denom = sum(wealthdict.values())
+
+    cashinplay = 0
+    for s in stocks:
+        if s['Stock'] in activestocks and s['Stock'] != 'N/A':
+            cashinplay += s['Value']
+    for s in stocks:
+        if s['Stock'] in activestocks and s['Stock'] != 'N/A':
+            nom = wealthdict[s['Stock']]
+            newval = nom * cashinplay / denom 
+            s['Value'] = newval
+        else:
+            continue
+    return stocks
+
+def actual_adjustments(stocks, valchangedict):
+    activestocks = valchangedict.keys()
+    for s in stocks:
+        if s['Stock'] in activestocks and s['Stock'] != 'N/A':
+            val = s['Value']
+            stockwealthchange = valchangedict[s['Stock']]
+            finalval = val * stockwealthchange
+            s['Value'] = finalval
+        else:
+            continue
+    return stocks
+
+
+
+  </code>  </pre>
+<p>
+I used my Github green stock data engine (which can be found <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a>), to generate 
+all datasets used in this project, aiming to ensure that the stocks shared on overlapping date range (4th August 2022 - 31st December 2025)
+</p>
+
+    <pre><code class="language-python">
+# path is where I saved my green stock database (see my github)
+tables = scan(path, 'TICKER_')
+combined_df = fetch_and_join(path, tables)
+# Can increase for longer term effects.
+days_sample = 50
+pie = [{'Stock': t, 'Value': 100, 'Status': 'VALID'} for t in tables]
+staticpie = [{'Stock': t, 'Value': 100, 'Status': 'VALID'} for t in tables]
+performance = {'FP': 0, 'FN': 0, 'TP': 0, 'TN': 0}
+for d in range(0, days_sample):
+    # Iterator
+    if d % 5 == 0:
+        expected_wealth_changes = {}
+        actual_wealth_changes = {}
+        total = 0
+        statictotal = 0
+        for p in pie:
+            total += p['Value']
+        for sp in staticpie:
+             statictotal += sp['Value']
+        for t in tables:
+            arimaobj = arimaforecaster(combined_df[d:d+50], 'date', t, pie)
+            data, pie = arimaobj.dfprocessor()
+            if data.empty:
+                continue
+            else:
+                if data['ARIMA (upper bound)'].isnull().values.all() or data['ARIMA (lower bound)'].isnull().values.all():
+                    pie = update(pie, t, 'INSUFFICIENT')
+                    data = combined_df[d:d+50][t]
+                    subset = list(pd.Series(data[39:45]).dropna(axis = 0))
+                    cumprodsact = [(subset[index] / subset[index - 1 ]) for index, f in enumerate(subset)]
+                    xa = 1
+                    for ca in cumprodsact:
+                            xa = xa * ca
+                    actual_wealth_changes[t] = xa
+                else:
+                    pie = update(pie, t, 'VALID')
+                    subset = data[39:45]
+                    estimationstatus = True
+                    for s in subset['ARIMA (mean)'][1:5]:
+                            if s < 0:
+                                estimationstatus == False
+                    if not estimationstatus:
+                            pie = update(pie, t, 'INSUFFICIENT')
+                            data = combined_df[d:d+50][t]
+                            subset = list(pd.Series(data[39:45]).dropna(axis = 0))
+                            cumprodsact = [(subset[index] / subset[index - 1 ]) for index, f in enumerate(subset)]
+                            xa = 1
+                            for ca in cumprodsact:
+                                    xa = xa * ca
+                            actual_wealth_changes[t] = xa
+                    else:
+                        fivedayreturnsexp = [float(list(subset['historic (training)'])[0])] + [float(f) for f in subset['ARIMA (mean)'][1:5]]
+                        fivedayreturnsact = [float(list(subset['historic (training)'])[0])] + [float(f) for f in pd.Series(subset['actual (test)'][1:5]).dropna(axis = 0)]
+                        cumprodsexp = [((fivedayreturnsexp[index] / fivedayreturnsexp[index - 1])) for index, f in enumerate(fivedayreturnsexp) if index > 0 ]
+                        cumprodsact = [((fivedayreturnsact[index] / fivedayreturnsact[index - 1])) for index, f in enumerate(fivedayreturnsact) if index > 0 ]
+                        xe = 1
+                        xa = 1
+                        for cp in cumprodsexp:
+                            xe = xe * cp
+                        for ca in cumprodsact:
+                            xa = xa * ca
+                        if xe > 1 and xa >1:
+                             performance['TP'] += 1 
+                        elif xe > 1 and xa < 1:
+                             performance['FP'] += 1
+                        elif xe < 1 and xa > 1:
+                             performance['FN'] += 1
+                        else:
+                             performance['TN'] += 1 
+                        expected_wealth_changes[t] = xe
+                        actual_wealth_changes[t] = xa
+        pie = expected_adjustments(pie, expected_wealth_changes)
+        pie = actual_adjustments(pie, actual_wealth_changes)
+        staticpie = actual_adjustments(staticpie, actual_wealth_changes)
+  </code>  </pre>
+
+<hr>
+
+<p style = "text-align: left">
+</p>
+</div>
+</section>
+
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">How did the portfolio adjust?</h2>
+<hr>
+   
+<div style = "height: 500px" id = "portfolio"></div>
+
+
+
+<hr>
+<p style = "text-align: left">
+The pipeline adjusted the allocation of each stock automatically before their actual wealth changes were factored in, leading to the line graph above. 
+Gradually, most stocks rose in valuation. There was a sharp change in Shoals Technologies, where the pipeline correctly forecasted a decrease in valuation which was then compounded by its actual decrease in valuation. 
+Overall, these results can best be visualised by comparing the forecast and rebalanced portfolio to a comparable solar portfolio focused without forecasting and rebalancing. This can be seen below. 
+
+</p>
+<hr> 
+<div style = "height: 500px" id = "compportfolio"></div>
+<p style = "text-align: left">
+Evidently, the ARIMA adjusted portfolio clearly yields consistently higher returns over the same time period - compared to an ordinary non-adjusted model. 
+This may be because the ARIMA model rarely made false positive estimations (predicted an overall positive returns but resulting in a negative return). 
+This means that when a stock did indeed decrease in value, most of the times, the portfolio reduced its weight to reduce its impact on the overall portfolio's wealth. 
+
+</p>
+</div>
+</section>
+
+
+
+    
+
+
+<section>
+<div class="container reveal">
+<h2 style = "text-align: center">What comes next?</h2>
+<p style = "text-align: center">
+This method for maximising returns and minimising losses certainly demonstrates potential. 
+To continue this study, I will have to increase the sample window beyond 50 days and factor in a more diversified assortment of solar stocks. 
+Additionally, to further increase accuracy and increase risk management, I could begin to factor in volatility (variation / standard deviation) into my calculations. 
+This may reduce exposure to stocks which leads to badly miscalculated bets (fortunately very rare in my use-case).
+
+
+</p>
+<p style = "text-align: center"> 
+    On a longer term time-scale, it would be helpful to factor in parsing of quarterly financial results to generate momentum terms which may potentially alter long-term price trajectories. 
+Additionally, it would be helpful to make more well-founded and supported bets by utilising other types of statistical forecasting techniques to predict how wealth will change over time. 
+
+</p>
+<h2  style = "text-align: center">Data Sources</h2>
+<p style = "text-align: center">Full data has been obtained by <a href ="https://www.alphavantage.co/documentation/" >alphavantage</a> using my own custom
+GUI for climate stock data extraction - full source code can be obtained on github <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a></p>
+</div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/prism.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.17.1/components/prism-python.min.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script src = "generaluse/navbar.js"> </script>
+<script src = "generaluse/pie.js"></script>
+<script src = "generaluse/reveal.js"></script>
+<script src = "generaluse/scatter.js"></script>
+<script src = "generaluse/heatmap.js"></script>
+<script src = "generaluse/multilinechart.js"></script>
+<script>
+    fetch("navbar.html")
+    .then(res => res.text())
+
+    .then(html => {
+      document.getElementById("navbar").innerHTML = html;
+    })
+</script>
+
+<script>
+
+drawpie("portfolio/data/solarstocks.csv", 
+'piechartinitialportfolio',
+'Starting Portfolio Composition before modelling', 
+'NO', {'QC Solar':'#fca59f',
+'Jinko Solar':'#fcc79f',
+'Array Technologies':'#fcf19f',
+'Daqo New Energy Corp':'#e3fc9f',
+'First Solar':'#bbfc9f',
+'FTC Solar':'#9ffcaf',
+'P2 Solar Inc':'#9ffce8',
+'Sunrun':'#9fe3fc',
+'Shoals Technologies':'#9fc0fc',
+'TOYO Solar':'#a59ffc',
+'Canadian Solar': '#bb9ffc',
+'Enphase Energy': '#d59ffc'});
+drawheatmap("portfolio/data/performance.csv",'performance', 'Heatmap Demonstrating the performance of the ARIMA forecast across all stocks', 'Expected', 'Actual', 'Y');
+drawmultilinechart("portfolio/data/indivperformance.csv", 'portfolio', '#ffffff', '#000000',
+ 'Breakdown of portfolio weightings after adjustments', 'Day from the start period', 'NO', 
+ {'QC Solar':'#fca59f',
+'Jinko Solar':'#fcc79f',
+'Array Technologies':'#fcf19f',
+'Daqo New Energy Corp':'#e3fc9f',
+'First Solar':'#bbfc9f',
+'FTC Solar':'#9ffcaf',
+'P2 Solar Inc':'#9ffce8',
+'Sunrun':'#9fe3fc',
+'Shoals Technologies':'#9fc0fc',
+'TOYO Co':'#a59ffc',
+'Canadian Solar Inc': '#bb9ffc',
+'Enphase Energy Inc': '#d59ffc'})
+drawmultilinechart("portfolio/data/compperformance.csv", 'compportfolio', '#ffffff', '#000000',
+ 'Comparing the ARIMA adjusted portfolio to a non-adjusted portfolio with the same initial allocations', 'Day from the start period', 'NO', 
+ {'Forecast Estimation Method': '#827dc9','Natural Market Fluctuations': '#363085'})
+</script>
+</body>

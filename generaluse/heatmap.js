@@ -31,7 +31,7 @@ function arraymakerheat(fileloc) {
             });
     });
 }
-function drawheatmap(file, element, title, xlab, ylab) { 
+function drawheatmap(file, element, title, xlab, ylab, labs) { 
     anychart.onDocumentReady(async function () {
         try {
             const rawData = await arraymakerheat(file);
@@ -81,8 +81,11 @@ function drawheatmap(file, element, title, xlab, ylab) {
                 chart.xAxis().labels().enabled(false);
                 chart.legend().fontSize(10).itemsLayout("horizontal-expandable");
                 var tooltip = chart.tooltip();
-                tooltip.positionMode("point"); 
-                tooltip.format("Row: {%y}\nColumn: {%x}\nValue: {%heat}")  
+                tooltip.format("{%y}\n{%x}\nValue: {%heat}")  
+            }
+            if (labs == 'Y'){
+                chart.yAxis().labels().enabled(true);
+                chart.xAxis().labels().enabled(true);
             }
             
             // Draw the chart

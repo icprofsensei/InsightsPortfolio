@@ -45,6 +45,9 @@ function drawlinefromcsv(file, html, title, xlab, ylab, rancol, col1, col2) {
             }
 
             const chart = anychart.line();
+            const xScale = anychart.scales.dateTime();
+            chart.xScale(xScale);
+
             for (let j = 0; j< (col2.length); j++){
                 dataarr = []
                 for (let i = 0; i < data.length; i ++) {
@@ -58,6 +61,7 @@ function drawlinefromcsv(file, html, title, xlab, ylab, rancol, col1, col2) {
                     }
                 }
                 const linegraph = chart.line(dataarr);
+                
                 if (rancol == 'YES'){
                     linegraph.name(col2[j]);
                     linegraph.stroke({color: getRandomColor(), thickness: 3}); 
@@ -78,7 +82,7 @@ function drawlinefromcsv(file, html, title, xlab, ylab, rancol, col1, col2) {
             chart.title(title);
             chart.title().fontSize(20)
             if (col1.toUpperCase() == 'DATE') {
-                chart.xAxis().labels().format(function (value) {
+                chart.xAxis().labels().format(function () {
                     var date = new Date(this.value);
                     return date.toLocaleDateString();
                 });

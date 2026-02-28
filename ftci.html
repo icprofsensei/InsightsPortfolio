@@ -69,11 +69,13 @@ section {
 <h2  style = "text-align: center">FTC Solar has accumulated liabilities</h2>
 <div style = "height: 500px" id = "shareholdereq"></div>
 <p style = "text-align: left">
-Total Shareholder Equity can be calculated as a sum of the following: 
+Total Shareholder Equity can be calculated as the following: 
 <math xmlns="https://www.w3.org/1998/Math/MathML/">
-            <mo>Total Assets</mo> - <mo>Total Liabilities</mo>
+            <mo>Total Assets</mo> 
+            <mi>-</mi>
+             <mo>Total Liabilities</mo>
 </math>
-The graph above demonstrates that over time, FTC Solar has an increasing amount of liabilities - such that it outweighs its total assets.
+The graph above demonstrates that over time, FTC Solar has an increasing amount of liabilities and a reduction in net assets - such that liabilities have recently outweighed its total assets.
 </p>
 </div>
 </section>
@@ -90,15 +92,15 @@ Book value can be calculated via the following:
                 <mn>Common Stock Shares Outstanding</mn>
             </mfrac>
 </math>
-Whilst Common Stock Shares Outstanding has steadily risen on FTC Solar's balance sheet, Total Shareholder Equity has become negative. Through the alphavantage API, I was able to plot the change in book value from 2005 to 2025.
+Whilst Common Stock Shares Outstanding has steadily risen on FTC Solar's balance sheet, Total Shareholder Equity has become negative. Through the alphavantage API, I was able to plot the change in book value over the last 5 years.
 </p>
 </div>
 </section>
     
 <section>
 <div class="container reveal">
-<h2  style = "text-align: center">This is driven mostly by a rise in shareholder equity</h2>
-<div style = "height: 500px" id = "equity"></div>
+<h2  style = "text-align: center">Is it over-valued?</h2>
+<div style = "height: 500px" id = "value"></div>
 <p style = "text-align: left">
 Shareholder equity has increased significantly in the time period studied, it can be calculated by the following: <br>
 <math xmlns="https://www.w3.org/1998/Math/MathML/">
@@ -209,14 +211,9 @@ GUI for climate stock data extraction - full source code can be obtained on gith
 </script>
 
 <script>
-drawlinefromcsv("solar/data/ftcishareholdereq.csv", 'shareholdereq', 'Time Series comparing assets and liabilities of FTC Solar', 'Day', 'Value', ['#d6cc08', '#49d699'], 'DATE', ['totalLiabilities','totalAssets']) ;
-
+drawlinefromcsv("solar/data/ftcishareholdereq.csv", 'shareholdereq', 'Time Series comparing assets and liabilities of FTC Solar', 'Day', 'Value', ['#d6cc08', '#49d699'], 'DATE', ['totalAssets', 'totalLiabilities']) ;
 drawlinefromcsv("solar/data/ftcibookval.csv", 'book', 'Time Series of book value of FTC Solar', 'Day', 'Book Value per share', '#d69b49', 'DATE', ['book']) ;
-drawlinefromcsv("solar/data/bookcomp.csv", 'equity', 'Time Series of total shareholder equity value for First Solar', 'Day', 'Total Shareholder Equity', '#49d699', 'DATE', ['totalShareholderEquity']) ;
-drawlinefromcsv("solar/data/bookcomp.csv", 'shares', 'Time Series of common stock shares outstanding for First Solar', 'Day', 'Common Stock Shares Outstanding', '#78acff', 'DATE', ['commonStockSharesOutstanding']) ;
-
-drawlinefromcsv("solar/data/openadj.csv", 'stockprice', 'Time Series of adjusted opening price for FSLR', 'Day', 'Adjusted Opening Price', '#d6cc08', 'DATE', ['AdjustedOpeningPriceFSLR']) ;
-drawrangesplinefromcsv("solar/data/pricebookratio.csv", 'value', 'P/B value of FSLR', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0)
+drawrangesplinefromcsv("solar/data/ftcipbval.csv", 'value', 'P/B value of FTC Solar', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0)
 drawcustomcolbar("solar/data/market_incomesheet.csv", 'incomesheet', 'Distance Correlation', 'Income Sheet Variable', 'Correlation between income sheet measure and market value of FSLR');
 </script>
 </body>

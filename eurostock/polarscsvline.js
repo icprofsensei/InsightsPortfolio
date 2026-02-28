@@ -49,27 +49,25 @@ function drawlinefromcsv(file, html, title, xlab, ylab, rancol, col1, col2) {
                 dataarr = []
                 for (let i = 0; i < data.length; i ++) {
                     if (col1 == 'DATE') {
-                        dataarr.push( [ new Date(data[i][col1]), data[i][col2[j]] ] )
+                                dataarr.push( [ new Date(data[i][col1]), parseFloat(data[i][col2[j]]) ] )
                     }
                     else {
                         if (data[i][col2[j]] != '') {
-                        dataarr.push([data[i][col1], data[i][col2[j]]])
+                                dataarr.push([data[i][col1], data[i][col2[j]]])
+                            }
                     }
-                    }
-                
                 }
                 const linegraph = chart.line(dataarr);
                 if (rancol == 'YES'){
-                linegraph.name(col2[j]);
-linegraph.stroke({color: getRandomColor(), thickness: 3}); 
+                    linegraph.name(col2[j]);
+                    linegraph.stroke({color: getRandomColor(), thickness: 3}); 
                 }
                 else if (typeof rancol == 'string') {
                     linegraph.name(col2[j]);
                     linegraph.stroke({color: rancol, thickness: 3});
                 }
                 else{
-                linegraph.name(col2[j]);
-linegraph.stroke({color: rancol[j], thickness: 3});
+                    linegraph.name(col2[j]).stroke({color: rancol[j], thickness: 3});
                 }
             }
        
@@ -80,12 +78,13 @@ linegraph.stroke({color: rancol[j], thickness: 3});
             chart.title(title);
             chart.title().fontSize(20)
             if (col1.toUpperCase() == 'DATE') {
-                chart.xAxis().labels().format(function () {
+                chart.xAxis().labels().format(function (value) {
                     var date = new Date(this.value);
                     return date.toLocaleDateString();
                 });
             } else {
                 chart.xAxis().labels().format(function (value) {
+                    var value = this.value
                     return Math.round(value);
                 });
             }

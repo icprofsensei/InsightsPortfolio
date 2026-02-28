@@ -59,12 +59,16 @@ function drawrangesplinefromcsv(file, html, title, xlab, ylab, rancol, col1, col
                 dataarrupper = []
                 dataarrlower = []
                 for (let i = 0; i < data.length; i ++) {
-                    if (data[i][col2[j]] >= z && data[i-1][col2[j]] < z) {
-                        var daydiff = Math.abs((new Date(data[i - 1][col1]) -  new Date(data[i][col1]))/ (1000 * 3600 * 24)) / 2
-                        var midpoint = addDays(new Date(data[i - 1][col1]), daydiff)
-
-                        dataarrupper.push( {x: midpoint,low:parseFloat(z), high: parseFloat(z)} )
-                        dataarrlower.push( {x: midpoint,low: parseFloat(z), high: parseFloat(z) } )
+                    if (i != 0) {
+                        if (data[i][col2[j]] >= z && data[i-1][col2[j]] < z) {
+                            
+                            var daydiff = Math.abs((new Date(data[i - 1][col1]) -  new Date(data[i][col1]))/ (1000 * 3600 * 24)) / 2
+                            
+                            var midpoint = addDays(new Date(data[i - 1][col1]), daydiff)
+                            console.log(daydiff)
+                            dataarrupper.push( {x: midpoint,low:parseFloat(z), high: parseFloat(z)} )
+                            dataarrlower.push( {x: midpoint,low: parseFloat(z), high: parseFloat(z) } )
+                        }
                     }
                     if (col1 == 'DATE' && data[i][col2[j]] >= z) {
                         dataarrupper.push( {x: new Date(data[i][col1]),low:parseFloat(z), high: parseFloat(data[i][col2[j]])} )
@@ -78,8 +82,8 @@ function drawrangesplinefromcsv(file, html, title, xlab, ylab, rancol, col1, col
                     else {
                         dataarrlower.push( {x: new Date(data[i][col1]),low: parseFloat(z), high: parseFloat(z) } )
                     }
+                
                 }
-                console.log(dataarrlower)
                 const upperSeries = chart.rangeSplineArea(dataarrupper);
                 upperSeries.name(`Overvalued`);
                 upperSeries.fill('red', 0.3);  

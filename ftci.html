@@ -92,6 +92,7 @@ Book value can be calculated via the following:
                 <mn>Common Stock Shares Outstanding</mn>
             </mfrac>
 </math>
+The book value theoretically estimates what a share in the company should be worth. 
 Whilst Common Stock Shares Outstanding has steadily risen on FTC Solar's balance sheet, Total Shareholder Equity has become negative. Through the alphavantage API, I was able to plot the change in book value over the last 5 years.
 </p>
 </div>
@@ -102,13 +103,18 @@ Whilst Common Stock Shares Outstanding has steadily risen on FTC Solar's balance
 <h2  style = "text-align: center">Is it over-valued?</h2>
 <div style = "height: 500px" id = "value"></div>
 <p style = "text-align: left">
-Shareholder equity has increased significantly in the time period studied, it can be calculated by the following: <br>
+The Price:Book ratio (P/B) indicates whether a stock is over or under-valued by comparing the market price to the book value of the company. <br>
 <math xmlns="https://www.w3.org/1998/Math/MathML/">
-    <mtext>            TotalShareholderEquity = Total Assets - Total liabilities
-</mtext>
+    <mo>P/B = </mo>
+            <mfrac>
+                <mn>Stock Price</mn>
+                <mn>Book Value</mn>
+            </mfrac>
 </math>
 <br>
-This indicates that FSLR has acquired more assets / reduced its liabilities, to therefore increase it's overall value.
+FTC Solar seems to have switched from being a slightly undervalued stock to being highly overvalued. 
+In fact, it actually reported a negative P/B ratio - indicating that it is extremely overvalued in its most recent balance sheet report.  
+Despite the evidence pointing to a company whose liabilities are beginning to exceed its current assets, FTC Solar's stock price rose dramatically over the course of 2025.
 
 </p>
 </div>
@@ -116,65 +122,18 @@ This indicates that FSLR has acquired more assets / reduced its liabilities, to 
 
 <section>
 <div class="container reveal">
-<h2  style = "text-align: center">Since shares outstanding has remained stable since 2013</h2>
-<div style = "height: 500px" id = "shares"></div>
+<h2  style = "text-align: center">Do the news sentiment explain the behaviour of FTC Solar?</h2>
+<div style = "height: 500px" id = "sentimentalpha"></div>
 <p style = "text-align: left">
-Between 2005 and 2013, First Solar made more shares available to purchase at set instances which led to sharp increases in outstanding shares. However, since 2013, the level has increased gradually - therefore demonstrating 
-that the overall increase in book value of the FSLR stock is due to the rise in total shareholder equity (as opposed to manipulation of the total shares available)
+As the scatter plot above demonstrates, there appears to be no distinct link between news sentiment and actual price movements.
+For my detection of news sentiment, I used the alpha vantage detected sentiment of the news article on FTC Solar for 2 years before the present day.
+I then plotted the subsequent time-series correlation coefficient of the FTC Solar stock price for a 24 hr window of trading following the news being released.
+Evidently, the alpha vantage detected sentiment of a news article is not a suitable indicator for potential price movements. 
 </p>
 </div>
 </section>
 
-<section>
-<div class="container reveal">
-<h2  style = "text-align: center">Market value has demonstrated a more complex long-term pattern </h2>
-<div style = "height: 500px" id = "stockprice"></div>
-<p style = "text-align: left">
-First Solar's market price shows a similar increase from 2012 onwards with a similar increased rate after 2022 as the book value of First Solar.
-However, prior to 2012, there appears to have been at least significant crashes in the stock value  - at least one potentially corresponding to the 2009 global financial crash (linked to US housing market). 
-</p>
-</div>
-</section>
 
-<section>
-<div class="container reveal">
-<h2  style = "text-align: center">So, what is its true value?</h2>    
-<div style = "height: 500px" id = "value"></div>
-<p style = "text-align: left">
-Now, when considering the market value to book value ratio, it's clear that the FSLR (First Solar) stock 
-was highly over-valued initially, perhaps explaining the sudden decrease in market value when shareholders 
-realised this. For almost 10 years between 2011 and 2020 the stock price and book value were closely matched. 
-However, recently, there has been a distinct shift towards an over-valuation in the stock again - indicating
-that investor valuation of First Solar has risen beyond the simple combination of its assets and liabilities.
-
-</p>
-
-</div>
-</section>
-
-
-<section>
-<div class="container reveal">
-<h2  style = "text-align: center">What might be determining market price?</h2>
-
-<div style = "height: 500px" id = "incomesheet"></div>
-<p style = "text-align: left">
-To determine associations between different metrics on the income sheet and market share price, I conducted distance correlation analysis. 
-This remains reliable with nonlinear relationships (such as the patterns observed in market share price) and therefore offers a better indication
-of association than standard correlation coefficients (such as Pearson's correlation coefficient)
-<p>
-<p style = "text-align: left">
-The results indicate that the market price is most influenced by the aggregation metrics:
-these factor in increases and decreases in value. A caveat to this method is that the distance correlation 
-does not directly state how the metric influences market price (either positively or negatively).
-</p>
-<p style = "text-align: left">
-Through exploratory data analysis, it appears that these aggregate factors lead to positive associations
-with the market value. This indicates that an increase in overall income before tax (which has the highest correlation coefficient)
-is associated with an increase in market price.
-</p>
-</div>
-</section>
      
 
 
@@ -200,7 +159,7 @@ GUI for climate stock data extraction - full source code can be obtained on gith
 <script src = "solar/polarcsvrangespline.js"></script>
 <script src = "solar/polarcsvbarcoloured.js"></script>
 <script src = "generaluse/reveal.js"></script>
-<script src = "generaluse/sunburst.js"></script>
+<script src = "generaluse/scatter.js"></script>
 <script>
     fetch("navbar.html")
     .then(res => res.text())
@@ -214,7 +173,6 @@ GUI for climate stock data extraction - full source code can be obtained on gith
 drawlinefromcsv("solar/data/ftcishareholdereq.csv", 'shareholdereq', 'Time Series comparing assets and liabilities of FTC Solar', 'Day', 'Value', ['#d6cc08', '#49d699'], 'DATE', ['totalAssets', 'totalLiabilities']) ;
 drawlinefromcsv("solar/data/ftcibookval.csv", 'book', 'Time Series of book value of FTC Solar', 'Day', 'Book Value per share', '#d69b49', 'DATE', ['book']) ;
 drawrangesplinefromcsv("solar/data/ftcipbval.csv", 'value', 'P/B value of FTC Solar', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0)
-drawcustomcolbar("solar/data/market_incomesheet.csv", 'incomesheet', 'Distance Correlation', 'Income Sheet Variable', 'Correlation between income sheet measure and market value of FSLR');
-</script>
+drawscatter("solar/data/ftcisentimentcorr.csv", 'sentimentalpha', 'Relationship between detected news sentiment and actual price movement', 'Alpha Vantage news sentiment for FTC Solar', 'Actual Price Correlation Coefficient for stock price after news release', 'sentiment_prediction','actual_r_val', 'YES')</script>
 </body>
  

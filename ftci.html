@@ -48,6 +48,8 @@ section {
 </div>
 </section>
 
+
+
 <section>
 <div class="container reveal">
 <h2  style = "text-align: center">Introduction</h2>
@@ -58,11 +60,27 @@ section {
     power generation. They also provide engineering and digital services to support installation projects. 
       
 </p> 
-<p style = "text-align: left"> The stock price of FTC Solar has displayed unusual short term momentum swings recently. In this data story, I try to understand what the company's fundamentals, as well as its wider news, can tell us about how investors views shift.
+<p style = "text-align: left"> The stock price of FTC Solar has displayed unusual short term momentum swings recently.
+     In this data story, I try to understand what the company's fundamentals, as well as what its wider news can tell us about how investors views shift.
 </p> 
 
 </div> 
 </section>
+
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">What's going on with FTC Solar?</h2>
+<div style = "height: 500px" id = "ftcistock"></div>
+<p style = "text-align: left"> FTC Solar (ticker = FTCI) is a particularly volatile solar stock. 
+    From their latest Q4 earnings report, FTC Solar's stock price has recently slumped, despite steady gains over 2025. 
+    As the chart above demonstrates, FTC Solar's stock price is characterised by large momentum swings.
+    In this data project, I seek to understand how this uncertain past can be understood through data. 
+</p> 
+
+</div> 
+</section>
+
 
 <section>
 <div class="container reveal">
@@ -113,7 +131,7 @@ The Price:Book ratio (P/B) indicates whether a stock is over or under-valued by 
 </math>
 <br>
 FTC Solar seems to have switched from being a slightly undervalued stock to being highly overvalued. 
-In fact, it actually reported a negative P/B ratio - indicating that it is extremely overvalued in its most recent balance sheet report.  
+In fact, it actually reported a negative P/B ratio - indicating that it is extremely overvalued in its most recent two balance sheet reports - here represented by a arbitrary P/B value of 10.  
 Despite the evidence pointing to a company whose liabilities are beginning to exceed its current assets, FTC Solar's stock price rose dramatically over the course of 2025.
 
 </p>
@@ -126,13 +144,25 @@ Despite the evidence pointing to a company whose liabilities are beginning to ex
 <div style = "height: 500px" id = "sentimentalpha"></div>
 <p style = "text-align: left">
 As the scatter plot above demonstrates, there appears to be no distinct link between news sentiment and actual price movements.
-For my detection of news sentiment, I used the alpha vantage detected sentiment of the news article on FTC Solar for 2 years before the present day.
+For my detection of news sentiment, I used the alpha vantage detected sentiment for each news article on FTC Solar for 2 years before the present day.
 I then plotted the subsequent time-series correlation coefficient of the FTC Solar stock price for a 24 hr window of trading following the news being released.
 Evidently, the alpha vantage detected sentiment of a news article is not a suitable indicator for potential price movements. 
 </p>
 </div>
 </section>
 
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Is FTC Solar fundamentally profitable?</h2>
+<div style = "height: 500px" id = "grossprofit"></div>
+<p style = "text-align: left">
+Gross Profit = Revenue - Cost Of Goods Sold (COGS)
+</p>
+<p style = "text-align: left">
+This graph demonstrates that FTC Solar are fundamentally profitable. 
+</p>
+</div>
+</section>
 
      
 
@@ -157,6 +187,7 @@ GUI for climate stock data extraction - full source code can be obtained on gith
 <script src = "generaluse/navbar.js"> </script>
 <script src = "eurostock/polarscsvline.js"></script>
 <script src = "solar/polarcsvrangespline.js"></script>
+<script src = "solar/grossprofit.js"></script>
 <script src = "solar/polarcsvbarcoloured.js"></script>
 <script src = "generaluse/reveal.js"></script>
 <script src = "generaluse/scatter.js"></script>
@@ -170,9 +201,13 @@ GUI for climate stock data extraction - full source code can be obtained on gith
 </script>
 
 <script>
+drawlinefromcsv("solar/data/ftciticker.csv", 'ftcistock', 'Time Series of FTC Solar stock price since April 2021', 'Day', 'Value', ['#059e33'], 'DATE', ['close']) ;
+
 drawlinefromcsv("solar/data/ftcishareholdereq.csv", 'shareholdereq', 'Time Series comparing assets and liabilities of FTC Solar', 'Day', 'Value', ['#d6cc08', '#49d699'], 'DATE', ['totalAssets', 'totalLiabilities']) ;
 drawlinefromcsv("solar/data/ftcibookval.csv", 'book', 'Time Series of book value of FTC Solar', 'Day', 'Book Value per share', '#d69b49', 'DATE', ['book']) ;
-drawrangesplinefromcsv("solar/data/ftcipbval.csv", 'value', 'P/B value of FTC Solar', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0)
-drawscatter("solar/data/ftcisentimentcorr.csv", 'sentimentalpha', 'Relationship between detected news sentiment and actual price movement', 'Alpha Vantage news sentiment for FTC Solar', 'Actual Price Correlation Coefficient for stock price after news release', 'sentiment_prediction','actual_r_val', 'YES')</script>
+drawrangesplinefromcsv("solar/data/ftcipbval.csv", 'value', 'P/B value of FTC Solar', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0);
+drawscatter("solar/data/ftcisentimentcorr.csv", 'sentimentalpha', 'Relationship between detected news sentiment and actual price movement', 'Alpha Vantage news sentiment for FTC Solar', 'Actual Price Correlation Coefficient for stock price after news release', 'sentiment_prediction','actual_r_val', '#000280');
+drawgp("solar/data/ftcigrossprofit.csv", 'grossprofit', 'Relationship between Revenue and COGS', 'Value', 'Time')
+</script>
 </body>
  

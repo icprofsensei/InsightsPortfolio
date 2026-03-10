@@ -68,8 +68,8 @@ function drawgp(file, html, title, xlab, ylab) {
                         dataarrupper.push( {x: new Date(data[i]['DATE']),   low:parseFloat(data[i]['Rev']), high: parseFloat(data[i]['Rev'])   } )
                         dataarrlower.push( {x: new Date(data[i]['DATE']),   low: parseFloat(data[i]['Cost']), high: parseFloat(data[i]['Rev'])  } )
                     }
-                    cost.push( {  x: new Date(data[i]['DATE']), low: parseFloat(data[i]['Cost']), high: parseFloat(data[i]['Cost']) } )
-                    rev.push( {  x: new Date(data[i]['DATE']), low: parseFloat(data[i]['Rev']), high: parseFloat(data[i]['Rev']) } )
+                    cost.push( {  x: new Date(data[i]['DATE']), value: parseFloat(data[i]['Cost']) } )
+                    rev.push( {  x: new Date(data[i]['DATE']), value: parseFloat(data[i]['Rev']) } )
                 
 
                 
@@ -78,7 +78,7 @@ function drawgp(file, html, title, xlab, ylab) {
                 upperSeries.name(`Unprofitable`);
                 upperSeries.fill('#c26e75', 0.3);
                 upperSeries.stroke('#c26e75');  
-                const costseries = chart.rangeSplineArea(cost);
+                const costseries = chart.spline(cost);
                 costseries.fill('#7a000a', 0.3);
                 costseries.stroke('#7a000a');
                 costseries.name(`Cost`);
@@ -86,7 +86,7 @@ function drawgp(file, html, title, xlab, ylab) {
                 lowerSeries.name(`Profitable`);
                 lowerSeries.fill('#787cf5', 0.3);
                 lowerSeries.stroke('#787cf5');  
-                const revseries = chart.rangeSplineArea(rev);
+                const revseries = chart.spline(rev);
                 revseries.fill('#030bfc', 0.3);
                 revseries.name(`Revenue`);
                 revseries.stroke('#030bfc')

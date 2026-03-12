@@ -159,7 +159,14 @@ Evidently, the alpha vantage detected sentiment of a news article is not a suita
 Gross Profit = Revenue - Cost Of Goods Sold (COGS)
 </p>
 <p style = "text-align: left">
-This graph demonstrates that FTC Solar are fundamentally profitable. 
+This graph demonstrates that FTC Solar's fundamentals have recently displayed profitability - despite recording historical losses across multiple years. 
+It is crucial to understand that these stock prices reported occurred despite investors being unaware of the quarterly financial reports (which only release 3 months later).
+Therefore, there is a lag between performance and market reaction. 
+Confusingly, when these recent results were revealed in their most recent Q4 financial report for December 2025, this was met by a sharp drop in the stock price 
+- despite the last two quarterly reports displaying profitability for the first time since 2023.
+</p><p style = "text-align: left">
+However, gross profit only indicates core profitability and this does not factor in taxes and interest. When these are considered, they reveal how much money is left for investors and re-investment. 
+This perhaps may make for a more realistic comparison metric. 
 </p>
 </div>
 </section>
@@ -171,10 +178,10 @@ This graph demonstrates that FTC Solar are fundamentally profitable.
 <div class="container reveal">
 <h2 style = "text-align: center">What comes next?</h2>
 <p style = "text-align: center">
-    This is my first financial data science project on solar stocks. In the coming data stories, I will look to forecast future trends 
-    in solar technology stocks to best forecast its growing popularity. 
+    Following this case-study on FTC Solar, it's become clear that a company's fundamentals can strongly impact a stock's value - alongside news articles (although this is difficult to forecast).
+    In the case of FTC Solar, I need to further examine how the stock price responds to the release of news for the previous quarter's results - and whether the important metrics vary over time. 
 </p>
-<p style = "text-align: center"> Coming up next, I want to begin understanding year on year growth rates and momentum features of solar stocks.
+<p style = "text-align: center"> Coming up next, I want to return to the main green portfolio project - but this time bringing a deeper focus on the impact of quarterly fundamental news.
 </p>
 <h2  style = "text-align: center">Data Sources</h2>
 <p style = "text-align: center">Full data has been obtained by <a href ="https://www.alphavantage.co/documentation/" >alphavantage</a> using my own custom
@@ -207,7 +214,7 @@ drawlinefromcsv("solar/data/ftcishareholdereq.csv", 'shareholdereq', 'Time Serie
 drawlinefromcsv("solar/data/ftcibookval.csv", 'book', 'Time Series of book value of FTC Solar', 'Day', 'Book Value per share', '#d69b49', 'DATE', ['book']) ;
 drawrangesplinefromcsv("solar/data/ftcipbval.csv", 'value', 'P/B value of FTC Solar', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0);
 drawscatter("solar/data/ftcisentimentcorr.csv", 'sentimentalpha', 'Relationship between detected news sentiment and actual price movement', 'Alpha Vantage news sentiment for FTC Solar', 'Actual Price Correlation Coefficient for stock price after news release', 'sentiment_prediction','actual_r_val', '#000280');
-drawgp("solar/data/ftcigrossprofit.csv", 'grossprofit', 'Relationship between Revenue and COGS', 'Value', 'Time')
+drawgp("solar/data/ftcigrossprofit.csv", 'grossprofit', 'Relationship between profitability and market price')
 </script>
 </body>
  

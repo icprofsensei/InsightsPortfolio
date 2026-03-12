@@ -43,7 +43,7 @@ function addDays(date, days) {
 }
 
 
-function drawgp(file, html, title, xlab, ylab) {
+function drawgp(file, html, title) {
     anychart.onDocumentReady(async function () {
         try {
             const data = await arraymaker(file);
@@ -58,6 +58,7 @@ function drawgp(file, html, title, xlab, ylab) {
             dataarrlower = []
             cost = []
             rev = []
+            stock = []
             for (let i = 0; i < data.length; i ++){
 
                     if (data[i]['Rev'] > data[i]['Cost']) {
@@ -70,7 +71,7 @@ function drawgp(file, html, title, xlab, ylab) {
                     }
                     cost.push( {  x: new Date(data[i]['DATE']), value: parseFloat(data[i]['Cost']) } )
                     rev.push( {  x: new Date(data[i]['DATE']), value: parseFloat(data[i]['Rev']) } )
-                
+                    stock.push({  x: new Date(data[i]['DATE']), value: parseFloat(data[i]['market']) })
 
                 
             }
@@ -90,11 +91,19 @@ function drawgp(file, html, title, xlab, ylab) {
                 revseries.fill('#030bfc', 0.3);
                 revseries.name(`Revenue`);
                 revseries.stroke('#030bfc')
+                const marketseries = chart.spline(stock);
+                marketseries.fill('#056d34', 0.3);
+                marketseries.name(`Stock Price`);
+                marketseries.stroke('#056d34')
 
             chart.legend().enabled(true);
             chart.legend().fontSize(10);
             chart.title(title);
             chart.title().fontSize(20)
+            var extraYScale = anychart.scales.linear();
+            chart.yAxis(1).scale(extraYScale);
+            chart.yAxis(1).orientation("right");
+            marketseries.yScale(extraYScale);
             if (Object.keys(data[0])[0].toUpperCase() == 'DATE') {
                 console.log(dataarrlower)
                 chart.xScale('date-time'); 
@@ -107,8 +116,9 @@ function drawgp(file, html, title, xlab, ylab) {
                     return Math.round(value);
                 });
             }
-            chart.xAxis().title(xlab);
-            chart.yAxis().title(ylab);
+            chart.xAxis().title('Date');
+            chart.yAxis(0).title('Value');
+            chart.yAxis(1).title("Stock Price");
             chart.container(html);
             chart.draw();
         } catch (error) {

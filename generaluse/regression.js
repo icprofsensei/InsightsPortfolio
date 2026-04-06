@@ -56,6 +56,10 @@ function drawregression(file, html, title, xlab, ylab, yint, grad, auto){
             chart = anychart.scatter();
             const scatter = chart.marker(data);
             scatter.name(html);
+            console.log(Object.keys(data[0]))
+            if(Object.keys(data[0]).includes('date')){
+            labels = chart.getSeries(0).labels().format("{%date}");
+            labels.enabled(true)}
             const line = chart.line(data2);
             if (auto == "YES"){
                 col1 = '#2E77A2'
@@ -88,6 +92,7 @@ function drawregression(file, html, title, xlab, ylab, yint, grad, auto){
             chart.yMinorGrid().stroke({color: "#85adad", thickness: 0.3, dash: 5});
             chart.container(html);
             chart.background().fill("white"); 
+            
             chart.draw();
         } catch (error) {
             console.error("Error initializing the chart:", error);

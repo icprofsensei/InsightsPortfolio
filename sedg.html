@@ -154,67 +154,8 @@ For each significant price swing, I then plotted the log scaled change in total 
 </div>
 </section>
 
-<section>
-<div class="container reveal">
-<h2  style = "text-align: center">Do the news sentiment explain the behaviour of FTC Solar?</h2>
-<div style = "height: 500px" id = "sentimentalpha"></div>
-<p style = "text-align: left">
-As the scatter plot above demonstrates, there appears to be no distinct link between news sentiment and actual price movements.
-For my detection of news sentiment, I used the alpha vantage detected sentiment for each news article on FTC Solar for 2 years before the present day.
-I then plotted the subsequent time-series correlation coefficient of the FTC Solar stock price for a 24 hr window of trading following the news being released.
-Evidently, the alpha vantage detected sentiment of a news article is not a suitable indicator for potential price movements. 
-</p>
-</div>
-</section>
-
-<section>
-<div class="container reveal">
-<h2  style = "text-align: center">Is FTC Solar fundamentally profitable?</h2>
-<div style = "height: 500px" id = "grossprofit"></div>
-<p style = "text-align: left">
-Gross Profit = Revenue - Cost Of Goods Sold (COGS)
-</p>
-<p style = "text-align: left">
-This graph demonstrates that FTC Solar's fundamentals have recently displayed profitability - despite recording historical losses across multiple years. 
-It is crucial to understand that these stock prices reported occurred despite investors being unaware of the quarterly financial reports (which only release 3 months later).
-Therefore, there is a lag between performance and market reaction. 
-Confusingly, when these recent results were revealed in their most recent Q4 financial report for December 2025, this was met by a sharp drop in the stock price 
-- despite the last two quarterly reports displaying profitability for the first time since 2023.
-</p><p style = "text-align: left">
-However, gross profit only indicates core profitability and this does not factor in taxes and interest. When these are considered, they reveal how much money is left for investors and re-investment. 
-This perhaps may make for a more realistic comparison metric. 
-</p>
-</div>
-</section>
-
-     
 
 
-<section>
-<div class="container reveal">
-    <h2 style = "text-align: center">Conclusion - is it over-valued or under-valued?</h2>
-<p style = "text-align: center">
-Evidently, further research is certainly required on FTC Solar - specifically regarding its underlying fundamental liabilities and specifically why they have increased recently. 
-By better understanding these liabilities, we can gain a better estimation for the book value of FTC Solar since for most of its time since being a public company it had been undervalued. 
-However, it has also struggled to demonstrate profitability with its core business model until recently - the next quarterly results will be very important to determine whether 
-FTC Solar's new leadership are able to make the company consistently profitable across multiple quarters. Ultimately, in the long-term, the FTC Solar stock appears to be undervalued since 
-the coming wave of solar investment and solar projects seem set to dramatically increase demand for its solar tracking technology.  
-</p>
-
-
-
-<h2 style = "text-align: center">What comes next?</h2>
-<p style = "text-align: center">
-    Following this case-study on FTC Solar, it's become clear that a company's fundamentals can strongly impact a stock's value - alongside news articles (although this is difficult to forecast).
-    In the case of FTC Solar, I need to further examine how the stock price responds to the release of news for the previous quarter's results - and whether the important metrics vary over time. 
-</p>
-<p style = "text-align: center"> Coming up next, I want to return to the main green portfolio project - but this time bringing a deeper focus on the impact of quarterly fundamental news.
-</p>
-<h2  style = "text-align: center">Data Sources</h2>
-<p style = "text-align: center">Full data has been obtained by <a href ="https://www.alphavantage.co/documentation/" >alphavantage</a> using my own custom
-GUI for climate stock data extraction - full source code can be obtained on github <a href = "https://github.com/icprofsensei/Finance_Stock_Database">here</a></p>
-</div>
-</section>
 
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>

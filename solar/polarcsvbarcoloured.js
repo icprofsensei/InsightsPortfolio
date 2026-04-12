@@ -43,8 +43,8 @@ function drawcustomcolbar(file, html, xlab, ylab, title) {
                 return;
             }
 
-            var chart = anychart.bar();
-            var series = chart.bar(data);
+            var chart = anychart.column();
+            var series = chart.column(data);
             series.stroke(null)
             chart.xAxis().title(xlab);
             chart.yAxis().title(ylab);

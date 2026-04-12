@@ -44,7 +44,7 @@ section {
 <section>
 <div class="container reveal">
 <h1 style = "text-align: center">What's next in store for SolarEdge Technologies?</h1>
-<img src="solar/sedg.jpg" alt="ImageFileNotFound" width="100%" height="auto">
+<img src="solar/sedg.jpeg" alt="ImageFileNotFound" width="100%" height="auto">
 </div>
 </section>
 
@@ -128,7 +128,7 @@ falling revenue, Lando alluded to the relatively unchanged dynamics in the US an
 </p>
 
 <h4  style = "text-align: center">Important Flags raised:</h4>
-<ul style = "text-align: left">
+<ul style = "text-align: center">
 <li>
 1. Threats to global oil and gas supply accelerate renewables demand
 </li>
@@ -147,17 +147,154 @@ falling revenue, Lando alluded to the relatively unchanged dynamics in the US an
 <h2  style = "text-align: center">How did this news effect investor attitudes? </h2>
 <div style = "height: 500px" id = "sedgtrevscatter"></div>
 <p style = "text-align: left">
-I determined significant market price swings following earnings calls (p < 0.05) at 10 day time series following the earnings call. 
-Using these significant price swings, I created linear models and scaled their slope coefficients using a sin() transformation. 
-For each significant price swing, I then plotted the log scaled change in total revenue from the previous quarter. 
+To produce this plot, I identified significant market price swings following earnings calls (p < 0.05) at 10 day intervals following quarterly financials being released.
+
+Using these significant price swings, I created linear models and scaled their slope coefficients using a Z transformation. 
+This enabled me to bring slope coefficients onto a similar scale to the log scaled change in quarterly revenue.
+For each log scaled change in revenue between quarters, I then plotted the Z normalised price swing. 
+</p>
+
+<p style = "text-align: left">
+Interestingly, no significant linear model can be plotted between quarterly revenue changes announced
+and swings in market value. Even for the more extreme decreases in quarterly revenue - such as those discussed above - 
+the investor response was not immediate and sudden.
+</p>
+
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Then what caused the biggest losses in investor confidence? </h2>
+
+<p style = "text-align: left">
+On 20th December 2021, SEDG became the first Israeli company to be featured on the S&P 500 index. 
+This marked SEDG becoming one of the 500 largest US-traded companies. 
+</p>
+
+<p style = "text-align: left">
+However, following a disasterous Q2 2023 report, the stock plunged in value. It was shortly removed from the S&P 500 on the 18th December 2023 - almost 2 years to the date it was added.
+</p>
+<p style = "text-align: left">
+It lost 43% of its value from the start of the year by September in 2023 - following the August earnigns call.
+I conducted a brief literary analysis on the Q2 report to better understand the issues preceding this sudden drop in value.
+  </p>
+<ul>
+    <li> 
+        <h5>Slower European Market</h5>
+        Lando alluded to a more 'moderate' European market compared to the acceleration in 2022 - triggered by the Russian invasion of Ukraine. 
+        In 2023, there was a 'milder winter', alongside generally 'reduced concerns over energy resilience' and lower energy prices. 
+    </li>
+    <li> 
+        <h5>Distributor inventory levels</h5>
+        During times of concern, distributors placed large inventory orders to support growing demand. 
+        When demand 'tapered off' during 2023, distributors sought to reduce inventory levels
+         - this may have led to the delayed slow down in revenue for SEDG solar.     
+    </li>
+    <li> 
+        <h5>Distributors cutting suppliers from portfolio</h5>
+        During previous times of shortages, distributors diversified the numbers of suppliers of their inventory. 
+        Lando mentioned that distributors reduce the 'number of suppliers' in their portfolio, potentially hinting 
+        that SolarEdge were one of the suppliers who suffered as a result of this period of abundant product availability.
+    </li>
+</ul>
+
+
+</div>
+</section>
+
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Was there a genuine slowdown in 2022?</h2>
+<div style = "height: 500px" id = "sedgbar"></div>
+<p style = "text-align: left">
+SolarEdge mentioned in numerous financial statements that the European market slowed down in 2023. In order to verify 
+that the market dynamics had genuinely shifted, I utilised a UK government dataset 
+on renewable projects  <a href = 'https://www.gov.uk/government/publications/renewable-energy-planning-database-monthly-extract'>dataset</a> currently in the 
+approval process. This could serve as a microcosm for wider European market dynamics, particularly representing shifting demand.
+The graph above measures the number of solar projects seeking approval for each year in the dataset.
+</p>
+<p style = "text-align: left">
+From the outset, it appears that 2023 saw record demand overall. However, SolarEdge mentioned that the slowdown occurred mid-way through the year (after riding the tailwinds from 2022), 
+therefore it would be helpful to analyse trends at a higher resolution. 
+</p>
+</div>
+</section>
+    
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">Was there a solar slowdown in 2023?</h2>
+<div style = "height: 500px" id = "sedgmonthly"></div>
+<p style = "text-align: left">
+A number of interesting patterns emerge when examining monthly solar project proposals in the UK. 
+</p>
+<ul>
+    <li>Firstly, it is clear that mid-way through 2023, the number of projects seeking approval 
+        reached a local maximum. 
+        Whilst the demand still remained elevated beyond pre-pandemic levels, there was a subsequent decrease towards the end of 2023. 
+        Although this does not necessarily mean that all SEDG revenue should dramatically fall everywhere across Europe, it is important 
+        to consider distributor behaviour too. If they had already increased their supplies to match demand, there may not have been sufficient need to continue 
+        on this trajectory. 
+    </li>
+    <li>Secondly, by examining the trends in project proposals between 2010 and 2015 - pronounced seasonal trends also emerge. Between spring and autumn, there are evident peaks in project
+        proposals in comparison to the winter months. This may affirm the concerns shared by SolarEdge about seasonal slowdowns - specifically if Winter weather emerges earlier 
+        than usual.  
+    </li>
+    <li>Finally, project proposals plummet after June 2015 in the UK. Whilst part of this can be attributed to the 
+        aforementioned seasonal trends in solar project proposals, the lowered level persists into 2016 and beyond. 
+        This corresponds to the UK government announcement that renewable energy subsidies would be cut in December 2015. 
+
+    </li>
+</ul>
+<p style = "text-align: left">
+Overall, it is clear that the applications for solar projects to the UK government, can serve as a helpful model to understand 
+the challenging market dynamics facing SolarEdge technologies.
 </p>
 </div>
 </section>
 
+<section>
+<div class="container reveal">
+<h2  style = "text-align: center">So, what comes next for SolarEdge?</h2>
+<p style = "text-align: left">
+Whilst SolarEdge have showed improving returns so far in 2026, the stock price has recently demonstrated 
+increased volatility due to the ongoing Middle-East conflict. 
+</p>
 
+<p style = "text-align: left">
+The release of their Q1 2026 results will be highly illuminating for how well SolarEdge are placed
+to profit from the current energy disruptions. 
+</p>
 
+<p style = "text-align: left">
+On the one hand, SolarEdge had seen successive periods of growth following the Covid-19 pandemic before the 
+outbreak of the Russian invasion of Ukraine. 
+This left them well-placed to continue with this momentum - following their entry into the S&P 500 - 
+and increase revenues in its aftermath. The share price of $271.9 differs starkly from the latest price as of 12/4/26 
+which is $41.76. 
+</p>
 
-    
+<p style = "text-align: left">
+On the other hand, the Russian invasion of Ukraine did not expose the European over-exposure to fossil fuels
+nearly as much as this ongoing conflict will. Namely, the over-reliance on oil exports passing through the Strait of Hormuz 
+has the capacity to bring into question energy generation, transport and food security globally. 
+</p>
+
+<p style = "text-align: left">
+The UK government has already revealed a plan to make plug-in solar available in shops 'within months' 
+according to a press <a href = "https://www.gov.uk/government/news/government-to-make-plug-in-solar-available-within-months">release</a>
+published on 24th March 2026. As other countries in Europe also follow suit - such as Germany who also are heavily oil dependent - 
+this can have huge ramifications for solar demand. 
+</p>
+
+<p style = "text-align: left">
+I personally expect a dramatic rise in multiple solar stocks - including SEDG - in response to this current conflict. 
+With all factors considered, the ramifications from this ongoing conflict in the middle-east looks set to trigger 
+a far greater reaction from governments compared to the Russio-Ukraine conflict in 2022.
+This post is not intended as financial advice. </p>
+</div>
+</section>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <script src = "generaluse/navbar.js"> </script>
 <script src = "eurostock/polarscsvline.js"></script>
@@ -167,6 +304,8 @@ For each significant price swing, I then plotted the log scaled change in total 
 <script src = "generaluse/reveal.js"></script>
 <script src = "generaluse/scatter.js"></script>
 <script src = "generaluse/regression.js"></script>
+<script src = "solar/polarcsvbarcoloured.js"></script>
+
 <script>
     fetch("navbar.html")
     .then(res => res.text())
@@ -181,11 +320,12 @@ drawlinefromcsv("solar/data/sedgstock.csv", 'sedgstock', 'Time Series of SEDG So
 
 drawlinefromcsv("solar/data/sedgtrev.csv", 'sedgtrev', 'Time Series of FTC Solar reported revenue since March 2015', 'Day', 'Value / USD', ['#059e33'],'date', ['totalRevenue']) ;
 
-drawregression("solar/data/sedgtrevscatter.csv", 'sedgtrevscatter', 'Linear Regression of Log Scaled change in total revenue and tan(Rate of Price Change)', 'Loge(Change in total quarterly revenue)', 'tan(Rate of price change)',  -0.7770647792770216,3.007966194124901, 'YES');
-drawlinefromcsv("solar/data/ftcibookval.csv", 'book', 'Time Series of book value of FTC Solar', 'Day', 'Book Value per share', '#d69b49', 'DATE', ['book']) ;
-drawrangesplinefromcsv("solar/data/ftcipbval.csv", 'value', 'P/B value of FTC Solar', 'Day', 'P/B Ratio', '#d6cc08', 'DATE', ['pbratio'], 1.0);
-drawscatter("solar/data/ftcisentimentcorr.csv", 'sentimentalpha', 'Relationship between detected news sentiment and actual price movement', 'Alpha Vantage news sentiment for FTC Solar', 'Actual Price Correlation Coefficient for stock price after news release', 'sentiment_prediction','actual_r_val', '#000280');
-drawgp("solar/data/ftcigrossprofit.csv", 'grossprofit', 'Relationship between profitability and market price')
+drawregression("solar/data/sedgtrevscatter.csv", 'sedgtrevscatter', 'Linear Regression of Log Scaled change in total revenue and Normalised Price Change Rate', 'Log(Change in total quarterly revenue)', 'Normalised Rate of price change', -0.0025317133663446804, 0.25013572747799373, 'YES');
+
+drawcustomcolbar("solar/data/sedgbar.csv", 'sedgbar', 'Year', 'Count', 'Bar Chart showing the number of solar projects seeking UK gov approval')
+
+drawlinefromcsv("solar/data/sedgmonthly.csv", 'sedgmonthly', 'Time Series of monthly solar project seeking UK gov approval', 'Month', 'Count', ['#1fbfc2'],'date', ['ProjectCount']) ;
+
 </script>
 </body>
  
